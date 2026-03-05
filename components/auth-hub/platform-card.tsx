@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { DS_NAMES } from '@/lib/supermetrics/constants'
 import type { DsId } from '@/lib/supermetrics/constants'
 import { ConnectButton } from './connect-button'
-import { PLATFORM_ICONS } from './platform-icons'
+import { PLATFORM_LOGOS } from './platform-icons'
 
 interface PlatformCardProps {
   clientSlug: string
@@ -33,12 +34,12 @@ export function PlatformCard({
   connectedAt,
 }: PlatformCardProps) {
   const badge = statusConfig[status]
-  const platform = PLATFORM_ICONS[dsId]
+  const logo = PLATFORM_LOGOS[dsId]
 
   return (
     <div className="relative overflow-hidden rounded-lg border border-white/[0.06] bg-bg-surface p-6">
       <div className="mb-4">
-        <platform.Icon size={32} color={platform.color} />
+        <Image src={logo} alt={DS_NAMES[dsId]} width={32} height={32} className="h-8 w-8" />
       </div>
       <h3 className="text-lg font-bold text-white">{DS_NAMES[dsId]}</h3>
 
