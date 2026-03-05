@@ -5,6 +5,34 @@ import type { DsId } from '@/lib/supermetrics/constants'
 import { PLATFORM_ICONS } from '@/components/auth-hub/platform-icons'
 import { ConnectionCell } from './connection-cell'
 
+/** Short labels for the table header — must be unique and compact */
+const SHORT_NAMES: Record<DsId, string> = {
+  [DS_IDS.GA4]: 'GA4',
+  [DS_IDS.META]: 'Meta Ads',
+  [DS_IDS.GOOGLE_ADS]: 'Google Ads',
+  [DS_IDS.MAILCHIMP]: 'Mailchimp',
+  [DS_IDS.KLAVIYO]: 'Klaviyo',
+  [DS_IDS.LINKEDIN]: 'LinkedIn Ads',
+  [DS_IDS.TIKTOK]: 'TikTok Ads',
+  [DS_IDS.SNAPCHAT]: 'Snapchat',
+  [DS_IDS.REDDIT]: 'Reddit',
+  [DS_IDS.BING_ADS]: 'Microsoft',
+  [DS_IDS.SHOPIFY]: 'Shopify',
+  [DS_IDS.HUBSPOT]: 'HubSpot',
+  [DS_IDS.TIKTOK_SHOP]: 'TikTok Shop',
+  [DS_IDS.LINKEDIN_PAGES]: 'LinkedIn Pages',
+  [DS_IDS.FACEBOOK_INSIGHTS]: 'FB Insights',
+  [DS_IDS.INSTAGRAM_INSIGHTS]: 'IG Insights',
+  [DS_IDS.TIKTOK_INSIGHTS]: 'TikTok Insights',
+  [DS_IDS.SALESFORCE]: 'Salesforce',
+  [DS_IDS.X_ADS]: 'X Ads',
+  [DS_IDS.X_INSIGHTS]: 'X Insights',
+  [DS_IDS.WOOCOMMERCE]: 'Woo',
+  [DS_IDS.APPLOVIN]: 'AppLovin',
+  [DS_IDS.AHREFS]: 'Ahrefs',
+  [DS_IDS.GOOGLE_SEARCH_CONSOLE]: 'GSC',
+}
+
 const PLATFORMS: DsId[] = [
   DS_IDS.GA4,
   DS_IDS.META,
@@ -73,11 +101,14 @@ export default function ConnectionsPage() {
                 return (
                   <th
                     key={dsId}
-                    className="px-2 py-3 text-center"
+                    className="min-w-[72px] px-2 py-3 text-center"
                     title={DS_NAMES[dsId]}
                   >
-                    <div className="flex flex-col items-center gap-1">
+                    <div className="flex flex-col items-center gap-1.5">
                       <platform.Icon size={16} color={platform.color} />
+                      <span className="text-[10px] leading-tight font-medium text-text-muted">
+                        {SHORT_NAMES[dsId]}
+                      </span>
                     </div>
                   </th>
                 )
