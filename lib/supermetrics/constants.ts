@@ -14,6 +14,15 @@ export const DS_IDS = {
   TIKTOK_SHOP: 'TIKTOK_SHOP',
   LINKEDIN_PAGES: 'LIP',
   FACEBOOK_INSIGHTS: 'FI',
+  INSTAGRAM_INSIGHTS: 'IG',
+  TIKTOK_INSIGHTS: 'TIKTOK_INSIGHTS',
+  SALESFORCE: 'SF',
+  X_ADS: 'TW',
+  X_INSIGHTS: 'TWP',
+  WOOCOMMERCE: 'WOOCOMMERCE',
+  APPLOVIN: 'APPLOVIN',
+  AHREFS: 'AHREFS',
+  GOOGLE_SEARCH_CONSOLE: 'GSC',
 } as const
 
 export type DsId = (typeof DS_IDS)[keyof typeof DS_IDS]
@@ -35,6 +44,15 @@ export const DS_NAMES: Record<DsId, string> = {
   [DS_IDS.TIKTOK_SHOP]: 'TikTok Shop',
   [DS_IDS.LINKEDIN_PAGES]: 'LinkedIn Pages',
   [DS_IDS.FACEBOOK_INSIGHTS]: 'Facebook Page Insights',
+  [DS_IDS.INSTAGRAM_INSIGHTS]: 'Instagram Page Insights',
+  [DS_IDS.TIKTOK_INSIGHTS]: 'TikTok Page Insights',
+  [DS_IDS.SALESFORCE]: 'Salesforce',
+  [DS_IDS.X_ADS]: 'X Ads',
+  [DS_IDS.X_INSIGHTS]: 'X Profile Insights',
+  [DS_IDS.WOOCOMMERCE]: 'WooCommerce',
+  [DS_IDS.APPLOVIN]: 'AppLovin',
+  [DS_IDS.AHREFS]: 'Ahrefs',
+  [DS_IDS.GOOGLE_SEARCH_CONSOLE]: 'Google Search Console',
 }
 
 /** Supermetrics API base URL */

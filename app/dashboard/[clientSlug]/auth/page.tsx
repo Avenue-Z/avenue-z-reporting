@@ -21,6 +21,15 @@ const PLATFORMS: { dsId: DsId; icon: string }[] = [
   { dsId: DS_IDS.TIKTOK_SHOP, icon: '🛒' },
   { dsId: DS_IDS.LINKEDIN_PAGES, icon: '📄' },
   { dsId: DS_IDS.FACEBOOK_INSIGHTS, icon: '📈' },
+  { dsId: DS_IDS.INSTAGRAM_INSIGHTS, icon: '📸' },
+  { dsId: DS_IDS.TIKTOK_INSIGHTS, icon: '📱' },
+  { dsId: DS_IDS.SALESFORCE, icon: '☁️' },
+  { dsId: DS_IDS.X_ADS, icon: '𝕏' },
+  { dsId: DS_IDS.X_INSIGHTS, icon: '𝕏' },
+  { dsId: DS_IDS.WOOCOMMERCE, icon: '🟣' },
+  { dsId: DS_IDS.APPLOVIN, icon: '🦁' },
+  { dsId: DS_IDS.AHREFS, icon: '🔗' },
+  { dsId: DS_IDS.GOOGLE_SEARCH_CONSOLE, icon: '🌐' },
 ]
 
 export default async function AuthHubPage({
