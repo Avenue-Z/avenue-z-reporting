@@ -43,10 +43,13 @@ export function ConnectButton({ clientSlug, dsId, status }: ConnectButtonProps) 
     <button
       onClick={handleConnect}
       disabled={loading}
-      className="mt-4 flex w-full items-center justify-center gap-2 rounded-[100px] border border-white/20 bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-white/90 disabled:opacity-50"
+      className="group relative mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-[100px] border border-white/20 bg-white px-5 py-2.5 text-sm font-bold text-black transition-all disabled:opacity-50"
     >
-      <Link2 className="h-3.5 w-3.5" />
-      {loading ? 'Generating...' : status === 'EXPIRED' ? 'Reconnect' : 'Connect'}
+      <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-brand-yellow via-brand-green to-brand-cyan opacity-0 transition-opacity group-hover:opacity-100" />
+      <Link2 className="relative h-3.5 w-3.5" />
+      <span className="relative">
+        {loading ? 'Generating...' : status === 'EXPIRED' ? 'Reconnect' : 'Connect'}
+      </span>
     </button>
   )
 }
