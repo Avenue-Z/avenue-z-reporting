@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Link2 } from 'lucide-react'
 import { generateLoginLink } from '@/app/actions/supermetrics'
 import type { DsId } from '@/lib/supermetrics/constants'
 
@@ -30,8 +31,9 @@ export function ConnectButton({ clientSlug, dsId, status }: ConnectButtonProps) 
     return (
       <button
         disabled
-        className="mt-4 block w-full cursor-default rounded-[100px] border border-brand-green/30 bg-transparent px-5 py-2.5 text-sm font-bold text-brand-green"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-[100px] border border-brand-green/30 bg-transparent px-5 py-2.5 text-sm font-bold text-brand-green"
       >
+        <Link2 className="h-3.5 w-3.5" />
         Connected
       </button>
     )
@@ -41,8 +43,9 @@ export function ConnectButton({ clientSlug, dsId, status }: ConnectButtonProps) 
     <button
       onClick={handleConnect}
       disabled={loading}
-      className="mt-4 block w-full rounded-[100px] bg-gradient-to-r from-brand-yellow via-brand-green to-brand-cyan px-5 py-2.5 text-sm font-extrabold uppercase tracking-wider text-black transition-opacity hover:opacity-90 disabled:opacity-50"
+      className="mt-4 flex w-full items-center justify-center gap-2 rounded-[100px] border border-white/20 bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-white/90 disabled:opacity-50"
     >
+      <Link2 className="h-3.5 w-3.5" />
       {loading ? 'Generating...' : status === 'EXPIRED' ? 'Reconnect' : 'Connect'}
     </button>
   )
