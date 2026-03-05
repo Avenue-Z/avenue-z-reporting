@@ -1,8 +1,9 @@
 import { getAllClients } from '@/lib/clients.config'
 import { Header } from '@/components/layout/header'
-import { PlatformCard } from '@/components/auth-hub/platform-card'
-import { DS_IDS } from '@/lib/supermetrics/constants'
+import { DS_IDS, DS_NAMES } from '@/lib/supermetrics/constants'
 import type { DsId } from '@/lib/supermetrics/constants'
+import { PLATFORM_ICONS } from '@/components/auth-hub/platform-icons'
+import { ConnectionCell } from './connection-cell'
 
 const PLATFORMS: DsId[] = [
   DS_IDS.GA4,
@@ -35,42 +36,83 @@ export default function ConnectionsPage() {
   const clients = getAllClients()
 
   // TODO: Fetch real connection status from Supermetrics once API keys are configured
-  // For now, all platforms show as NOT_CONNECTED
-  const connectionMap: Record<
+  // Shape: { [clientSlug]: { [dsId]: { status, connectedAt? } } }
+  const connectionData: Record<
     string,
-    { status: 'CONNECTED' | 'EXPIRED' | 'NOT_CONNECTED'; connectedAt?: string }
+    Record<string, { status: 'CONNECTED' | 'EXPIRED' | 'NOT_CONNECTED'; connectedAt?: string }>
   > = {}
 
   return (
     <>
       <Header title="Connections" subtitle="Avenue Z">
-        <span className="text-sm text-text-muted">
-          Manage platform connections for all clients
-        </span>
+        <div className="flex items-center gap-6 text-xs text-text-muted">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-green" />
+            Connected
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-purple" />
+            Expired
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#3a3a3a]" />
+            Not Connected
+          </span>
+        </div>
       </Header>
 
-      <div className="flex flex-col gap-12">
-        {clients.map((client) => (
-          <section key={client.slug}>
-            <h2 className="mb-4 text-xl font-extrabold text-white">
-              {client.name}
-            </h2>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="overflow-x-auto rounded-lg border border-white/[0.06]">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-white/[0.06] bg-bg-surface">
+              <th className="sticky left-0 z-10 bg-bg-surface px-4 py-3 text-left text-xs font-extrabold uppercase tracking-widest text-text-muted">
+                Client
+              </th>
               {PLATFORMS.map((dsId) => {
-                const conn = connectionMap[dsId]
+                const platform = PLATFORM_ICONS[dsId]
                 return (
-                  <PlatformCard
+                  <th
                     key={dsId}
-                    clientSlug={client.slug}
-                    dsId={dsId}
-                    status={conn?.status ?? 'NOT_CONNECTED'}
-                    connectedAt={conn?.connectedAt}
-                  />
+                    className="px-2 py-3 text-center"
+                    title={DS_NAMES[dsId]}
+                  >
+                    <div className="flex flex-col items-center gap-1">
+                      <platform.Icon size={16} color={platform.color} />
+                    </div>
+                  </th>
                 )
               })}
-            </div>
-          </section>
-        ))}
+            </tr>
+          </thead>
+          <tbody>
+            {clients.map((client) => {
+              const clientConnections = connectionData[client.slug] ?? {}
+              return (
+                <tr
+                  key={client.slug}
+                  className="border-b border-white/[0.06] transition-colors hover:bg-white/[0.02]"
+                >
+                  <td className="sticky left-0 z-10 bg-black px-4 py-3 text-sm font-bold text-white">
+                    {client.name}
+                  </td>
+                  {PLATFORMS.map((dsId) => {
+                    const conn = clientConnections[dsId]
+                    const status = conn?.status ?? 'NOT_CONNECTED'
+                    return (
+                      <td key={dsId} className="px-2 py-3 text-center">
+                        <ConnectionCell
+                          clientSlug={client.slug}
+                          dsId={dsId}
+                          status={status}
+                        />
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
     </>
   )
