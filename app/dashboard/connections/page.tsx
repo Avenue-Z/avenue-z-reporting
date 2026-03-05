@@ -4,31 +4,31 @@ import { PlatformCard } from '@/components/auth-hub/platform-card'
 import { DS_IDS } from '@/lib/supermetrics/constants'
 import type { DsId } from '@/lib/supermetrics/constants'
 
-const PLATFORMS: { dsId: DsId; icon: string }[] = [
-  { dsId: DS_IDS.GA4, icon: '📊' },
-  { dsId: DS_IDS.META, icon: '📘' },
-  { dsId: DS_IDS.GOOGLE_ADS, icon: '📢' },
-  { dsId: DS_IDS.MAILCHIMP, icon: '📧' },
-  { dsId: DS_IDS.KLAVIYO, icon: '🎯' },
-  { dsId: DS_IDS.LINKEDIN, icon: '💼' },
-  { dsId: DS_IDS.TIKTOK, icon: '🎵' },
-  { dsId: DS_IDS.SNAPCHAT, icon: '👻' },
-  { dsId: DS_IDS.REDDIT, icon: '🟠' },
-  { dsId: DS_IDS.BING_ADS, icon: '🔍' },
-  { dsId: DS_IDS.SHOPIFY, icon: '🛍️' },
-  { dsId: DS_IDS.HUBSPOT, icon: '🧡' },
-  { dsId: DS_IDS.TIKTOK_SHOP, icon: '🛒' },
-  { dsId: DS_IDS.LINKEDIN_PAGES, icon: '📄' },
-  { dsId: DS_IDS.FACEBOOK_INSIGHTS, icon: '📈' },
-  { dsId: DS_IDS.INSTAGRAM_INSIGHTS, icon: '📸' },
-  { dsId: DS_IDS.TIKTOK_INSIGHTS, icon: '📱' },
-  { dsId: DS_IDS.SALESFORCE, icon: '☁️' },
-  { dsId: DS_IDS.X_ADS, icon: '𝕏' },
-  { dsId: DS_IDS.X_INSIGHTS, icon: '𝕏' },
-  { dsId: DS_IDS.WOOCOMMERCE, icon: '🟣' },
-  { dsId: DS_IDS.APPLOVIN, icon: '🦁' },
-  { dsId: DS_IDS.AHREFS, icon: '🔗' },
-  { dsId: DS_IDS.GOOGLE_SEARCH_CONSOLE, icon: '🌐' },
+const PLATFORMS: DsId[] = [
+  DS_IDS.GA4,
+  DS_IDS.META,
+  DS_IDS.GOOGLE_ADS,
+  DS_IDS.MAILCHIMP,
+  DS_IDS.KLAVIYO,
+  DS_IDS.LINKEDIN,
+  DS_IDS.TIKTOK,
+  DS_IDS.SNAPCHAT,
+  DS_IDS.REDDIT,
+  DS_IDS.BING_ADS,
+  DS_IDS.SHOPIFY,
+  DS_IDS.HUBSPOT,
+  DS_IDS.TIKTOK_SHOP,
+  DS_IDS.LINKEDIN_PAGES,
+  DS_IDS.FACEBOOK_INSIGHTS,
+  DS_IDS.INSTAGRAM_INSIGHTS,
+  DS_IDS.TIKTOK_INSIGHTS,
+  DS_IDS.SALESFORCE,
+  DS_IDS.X_ADS,
+  DS_IDS.X_INSIGHTS,
+  DS_IDS.WOOCOMMERCE,
+  DS_IDS.APPLOVIN,
+  DS_IDS.AHREFS,
+  DS_IDS.GOOGLE_SEARCH_CONSOLE,
 ]
 
 export default function ConnectionsPage() {
@@ -56,14 +56,13 @@ export default function ConnectionsPage() {
               {client.name}
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {PLATFORMS.map(({ dsId, icon }) => {
+              {PLATFORMS.map((dsId) => {
                 const conn = connectionMap[dsId]
                 return (
                   <PlatformCard
                     key={dsId}
                     clientSlug={client.slug}
                     dsId={dsId}
-                    icon={icon}
                     status={conn?.status ?? 'NOT_CONNECTED'}
                     connectedAt={conn?.connectedAt}
                   />

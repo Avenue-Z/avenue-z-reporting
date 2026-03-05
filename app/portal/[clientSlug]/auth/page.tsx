@@ -4,11 +4,31 @@ import { PlatformCard } from '@/components/auth-hub/platform-card'
 import { DS_IDS } from '@/lib/supermetrics/constants'
 import type { DsId } from '@/lib/supermetrics/constants'
 
-const PLATFORMS: { dsId: DsId; icon: string }[] = [
-  { dsId: DS_IDS.GA4, icon: '📊' },
-  { dsId: DS_IDS.META, icon: '📘' },
-  { dsId: DS_IDS.GOOGLE_ADS, icon: '📢' },
-  { dsId: DS_IDS.MAILCHIMP, icon: '📧' },
+const PLATFORMS: DsId[] = [
+  DS_IDS.GA4,
+  DS_IDS.META,
+  DS_IDS.GOOGLE_ADS,
+  DS_IDS.MAILCHIMP,
+  DS_IDS.KLAVIYO,
+  DS_IDS.LINKEDIN,
+  DS_IDS.TIKTOK,
+  DS_IDS.SNAPCHAT,
+  DS_IDS.REDDIT,
+  DS_IDS.BING_ADS,
+  DS_IDS.SHOPIFY,
+  DS_IDS.HUBSPOT,
+  DS_IDS.TIKTOK_SHOP,
+  DS_IDS.LINKEDIN_PAGES,
+  DS_IDS.FACEBOOK_INSIGHTS,
+  DS_IDS.INSTAGRAM_INSIGHTS,
+  DS_IDS.TIKTOK_INSIGHTS,
+  DS_IDS.SALESFORCE,
+  DS_IDS.X_ADS,
+  DS_IDS.X_INSIGHTS,
+  DS_IDS.WOOCOMMERCE,
+  DS_IDS.APPLOVIN,
+  DS_IDS.AHREFS,
+  DS_IDS.GOOGLE_SEARCH_CONSOLE,
 ]
 
 export default async function ClientAuthPage({
@@ -36,14 +56,13 @@ export default async function ClientAuthPage({
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {PLATFORMS.map(({ dsId, icon }) => {
+        {PLATFORMS.map((dsId) => {
           const conn = connectionMap[dsId]
           return (
             <PlatformCard
               key={dsId}
               clientSlug={client.slug}
               dsId={dsId}
-              icon={icon}
               status={conn?.status ?? 'NOT_CONNECTED'}
               connectedAt={conn?.connectedAt}
             />
