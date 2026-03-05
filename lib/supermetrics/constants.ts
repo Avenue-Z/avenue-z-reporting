@@ -11,6 +11,9 @@ export const DS_IDS = {
   REDDIT: 'REDDIT',
   BING_ADS: 'BA',
   SHOPIFY: 'SHOPIFY',
+  TIKTOK_SHOP: 'TIKTOK_SHOP',
+  LINKEDIN_PAGES: 'LIP',
+  FACEBOOK_INSIGHTS: 'FI',
 } as const
 
 export type DsId = (typeof DS_IDS)[keyof typeof DS_IDS]
@@ -29,6 +32,9 @@ export const DS_NAMES: Record<DsId, string> = {
   [DS_IDS.REDDIT]: 'Reddit Ads',
   [DS_IDS.BING_ADS]: 'Microsoft Ads',
   [DS_IDS.SHOPIFY]: 'Shopify',
+  [DS_IDS.TIKTOK_SHOP]: 'TikTok Shop',
+  [DS_IDS.LINKEDIN_PAGES]: 'LinkedIn Pages',
+  [DS_IDS.FACEBOOK_INSIGHTS]: 'Facebook Page Insights',
 }
 
 /** Supermetrics API base URL */

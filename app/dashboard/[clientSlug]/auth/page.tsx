@@ -11,6 +11,16 @@ const PLATFORMS: { dsId: DsId; icon: string }[] = [
   { dsId: DS_IDS.GOOGLE_ADS, icon: '📢' },
   { dsId: DS_IDS.MAILCHIMP, icon: '📧' },
   { dsId: DS_IDS.LINKEDIN, icon: '💼' },
+  { dsId: DS_IDS.TIKTOK, icon: '🎵' },
+  { dsId: DS_IDS.SNAPCHAT, icon: '👻' },
+  { dsId: DS_IDS.REDDIT, icon: '🟠' },
+  { dsId: DS_IDS.BING_ADS, icon: '🔍' },
+  { dsId: DS_IDS.SHOPIFY, icon: '🛍️' },
+  { dsId: DS_IDS.HUBSPOT, icon: '🧡' },
+  { dsId: DS_IDS.KLAVIYO, icon: '🎯' },
+  { dsId: DS_IDS.TIKTOK_SHOP, icon: '🛒' },
+  { dsId: DS_IDS.LINKEDIN_PAGES, icon: '📄' },
+  { dsId: DS_IDS.FACEBOOK_INSIGHTS, icon: '📈' },
 ]
 
 export default async function AuthHubPage({

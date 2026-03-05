@@ -17,6 +17,9 @@ const PLATFORMS: { dsId: DsId; icon: string }[] = [
   { dsId: DS_IDS.BING_ADS, icon: '🔍' },
   { dsId: DS_IDS.SHOPIFY, icon: '🛍️' },
   { dsId: DS_IDS.HUBSPOT, icon: '🧡' },
+  { dsId: DS_IDS.TIKTOK_SHOP, icon: '🛒' },
+  { dsId: DS_IDS.LINKEDIN_PAGES, icon: '📄' },
+  { dsId: DS_IDS.FACEBOOK_INSIGHTS, icon: '📈' },
 ]
 
 export default function ConnectionsPage() {
