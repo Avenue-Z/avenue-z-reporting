@@ -76,7 +76,7 @@ export async function GA4Report({ clientSlug, dateRange }: GA4Props) {
             value={kpi.value}
             delta={kpi.delta}
             suffix={kpi.suffix}
-            accentGradient="reputation"
+
           />
         ))}
       </div>

@@ -66,7 +66,7 @@ export async function HubSpotPerformanceReport({ clientSlug, dateRange }: HubSpo
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient="full"
+
           />
         ))}
       </div>

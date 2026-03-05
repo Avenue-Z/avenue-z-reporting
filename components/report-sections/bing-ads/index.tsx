@@ -55,7 +55,7 @@ export async function BingAdsReport({ clientSlug, dateRange }: BingAdsProps) {
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient="reputation"
+
           />
         ))}
       </div>

@@ -65,7 +65,7 @@ export async function EmailMarketingReport({ clientSlug, dateRange }: EmailMarke
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient="revenue"
+
           />
         ))}
       </div>

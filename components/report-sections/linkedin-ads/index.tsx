@@ -55,7 +55,7 @@ export async function LinkedInAdsReport({ clientSlug, dateRange }: LinkedInAdsPr
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient={kpi.accent}
+
           />
         ))}
       </div>

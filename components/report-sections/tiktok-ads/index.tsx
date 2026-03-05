@@ -57,7 +57,7 @@ export async function TikTokAdsReport({ clientSlug, dateRange }: TikTokAdsProps)
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient={kpi.accent}
+
           />
         ))}
       </div>

@@ -64,7 +64,7 @@ export async function ShopifyPerformanceReport({ clientSlug, dateRange }: Shopif
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient="revenue"
+
           />
         ))}
       </div>

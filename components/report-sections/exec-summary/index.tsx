@@ -69,7 +69,7 @@ export async function ExecSummary({ clientSlug, dateRange }: ExecSummaryProps) {
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient={kpi.accent}
+
           />
         ))}
       </div>

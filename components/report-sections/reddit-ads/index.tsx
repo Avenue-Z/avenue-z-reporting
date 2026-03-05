@@ -55,7 +55,7 @@ export async function RedditAdsReport({ clientSlug, dateRange }: RedditAdsProps)
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient={kpi.accent}
+
           />
         ))}
       </div>

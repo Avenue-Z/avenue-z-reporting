@@ -59,7 +59,7 @@ export async function GoogleAdsReport({ clientSlug, dateRange }: GoogleAdsProps)
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient="revenue"
+
           />
         ))}
       </div>

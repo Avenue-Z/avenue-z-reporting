@@ -6,7 +6,6 @@ interface KpiCardProps {
   delta?: number // percentage change, e.g. 12.5 or -3.2
   prefix?: string // e.g. "$"
   suffix?: string // e.g. "%"
-  accentGradient?: 'revenue' | 'reputation' | 'full'
 }
 
 export function KpiCard({
@@ -15,18 +14,9 @@ export function KpiCard({
   delta,
   prefix,
   suffix,
-  accentGradient = 'revenue',
 }: KpiCardProps) {
-  const gradientClass = {
-    revenue: 'bg-gradient-to-r from-brand-yellow via-brand-green to-brand-cyan',
-    reputation: 'bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-purple',
-    full: 'bg-gradient-to-r from-brand-yellow via-brand-green via-brand-cyan via-brand-blue to-brand-purple',
-  }[accentGradient]
-
   return (
-    <div className="relative overflow-hidden rounded-lg border border-white/[0.08] bg-bg-surface px-6 py-5">
-      {/* Top gradient accent */}
-      <div className={cn('absolute left-0 right-0 top-0 h-0.5', gradientClass)} />
+    <div className="rounded-lg border border-white/[0.08] bg-bg-surface px-6 py-5">
 
       <p className="text-xs font-extrabold uppercase tracking-widest text-text-muted">
         {title}

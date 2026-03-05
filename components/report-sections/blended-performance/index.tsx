@@ -65,7 +65,7 @@ export async function BlendedPerformanceReport({ clientSlug, dateRange }: Blende
             delta={kpi.delta}
             prefix={kpi.prefix}
             suffix={kpi.suffix}
-            accentGradient="full"
+
           />
         ))}
       </div>
