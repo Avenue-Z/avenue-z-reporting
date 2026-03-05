@@ -1,37 +1,8 @@
 import { getAllClients } from '@/lib/clients.config'
 import { Header } from '@/components/layout/header'
-import { DS_IDS, DS_NAMES } from '@/lib/supermetrics/constants'
+import { DS_IDS } from '@/lib/supermetrics/constants'
 import type { DsId } from '@/lib/supermetrics/constants'
-import { PLATFORM_ICONS } from '@/components/auth-hub/platform-icons'
-import { ConnectionCell } from './connection-cell'
-
-/** Short labels for the table header — must be unique and compact */
-const SHORT_NAMES: Record<DsId, string> = {
-  [DS_IDS.GA4]: 'GA4',
-  [DS_IDS.META]: 'Meta Ads',
-  [DS_IDS.GOOGLE_ADS]: 'Google Ads',
-  [DS_IDS.MAILCHIMP]: 'Mailchimp',
-  [DS_IDS.KLAVIYO]: 'Klaviyo',
-  [DS_IDS.LINKEDIN]: 'LinkedIn Ads',
-  [DS_IDS.TIKTOK]: 'TikTok Ads',
-  [DS_IDS.SNAPCHAT]: 'Snapchat',
-  [DS_IDS.REDDIT]: 'Reddit',
-  [DS_IDS.BING_ADS]: 'Microsoft',
-  [DS_IDS.SHOPIFY]: 'Shopify',
-  [DS_IDS.HUBSPOT]: 'HubSpot',
-  [DS_IDS.TIKTOK_SHOP]: 'TikTok Shop',
-  [DS_IDS.LINKEDIN_PAGES]: 'LinkedIn Pages',
-  [DS_IDS.FACEBOOK_INSIGHTS]: 'FB Insights',
-  [DS_IDS.INSTAGRAM_INSIGHTS]: 'IG Insights',
-  [DS_IDS.TIKTOK_INSIGHTS]: 'TikTok Insights',
-  [DS_IDS.SALESFORCE]: 'Salesforce',
-  [DS_IDS.X_ADS]: 'X Ads',
-  [DS_IDS.X_INSIGHTS]: 'X Insights',
-  [DS_IDS.WOOCOMMERCE]: 'Woo',
-  [DS_IDS.APPLOVIN]: 'AppLovin',
-  [DS_IDS.AHREFS]: 'Ahrefs',
-  [DS_IDS.GOOGLE_SEARCH_CONSOLE]: 'GSC',
-}
+import { ClientConnectionRow } from './client-connection-row'
 
 const PLATFORMS: DsId[] = [
   DS_IDS.GA4,
@@ -72,78 +43,31 @@ export default function ConnectionsPage() {
 
   return (
     <>
-      <Header title="Connections" subtitle="Avenue Z">
-        <div className="flex items-center gap-6 text-xs text-text-muted">
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-green" />
-            Connected
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand-purple" />
-            Expired
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#3a3a3a]" />
-            Not Connected
-          </span>
-        </div>
-      </Header>
+      <Header title="Connections" subtitle="Avenue Z" />
 
-      <div className="overflow-x-auto rounded-lg border border-white/[0.06]">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-white/[0.06] bg-bg-surface">
-              <th className="sticky left-0 z-10 bg-bg-surface px-4 py-3 text-left text-xs font-extrabold uppercase tracking-widest text-text-muted">
-                Client
-              </th>
-              {PLATFORMS.map((dsId) => {
-                const platform = PLATFORM_ICONS[dsId]
-                return (
-                  <th
-                    key={dsId}
-                    className="min-w-[72px] px-2 py-3 text-center"
-                    title={DS_NAMES[dsId]}
-                  >
-                    <div className="flex flex-col items-center gap-1.5">
-                      <platform.Icon size={16} color={platform.color} />
-                      <span className="text-[10px] leading-tight font-medium text-text-muted">
-                        {SHORT_NAMES[dsId]}
-                      </span>
-                    </div>
-                  </th>
-                )
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {clients.map((client) => {
-              const clientConnections = connectionData[client.slug] ?? {}
-              return (
-                <tr
-                  key={client.slug}
-                  className="border-b border-white/[0.06] transition-colors hover:bg-white/[0.02]"
-                >
-                  <td className="sticky left-0 z-10 bg-black px-4 py-3 text-sm font-bold text-white">
-                    {client.name}
-                  </td>
-                  {PLATFORMS.map((dsId) => {
-                    const conn = clientConnections[dsId]
-                    const status = conn?.status ?? 'NOT_CONNECTED'
-                    return (
-                      <td key={dsId} className="px-2 py-3 text-center">
-                        <ConnectionCell
-                          clientSlug={client.slug}
-                          dsId={dsId}
-                          status={status}
-                        />
-                      </td>
-                    )
-                  })}
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+      <div className="flex flex-col gap-3">
+        {clients.map((client) => {
+          const clientConnections = connectionData[client.slug] ?? {}
+          const connectedCount = PLATFORMS.filter(
+            (dsId) => clientConnections[dsId]?.status === 'CONNECTED'
+          ).length
+          const expiredCount = PLATFORMS.filter(
+            (dsId) => clientConnections[dsId]?.status === 'EXPIRED'
+          ).length
+
+          return (
+            <ClientConnectionRow
+              key={client.slug}
+              clientSlug={client.slug}
+              clientName={client.name}
+              platforms={PLATFORMS}
+              connectionMap={clientConnections}
+              connectedCount={connectedCount}
+              expiredCount={expiredCount}
+              totalCount={PLATFORMS.length}
+            />
+          )
+        })}
       </div>
     </>
   )
