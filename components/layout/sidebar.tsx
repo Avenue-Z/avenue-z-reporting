@@ -28,7 +28,7 @@ export function Sidebar() {
   const isTopLevel = !clientSlug || ['reports', 'connections', 'settings'].includes(clientSlug)
 
   if (!isTopLevel && clientSlug) {
-    return <ClientSidebar clientSlug={clientSlug} pathname={pathname} activeSection={searchParams.get('section')} />
+    return <ClientSidebar clientSlug={clientSlug} pathname={pathname} activeSection={searchParams.get('section')} dateRange={searchParams.get('dateRange')} />
   }
 
   return <MainSidebar pathname={pathname} />
@@ -83,10 +83,12 @@ function ClientSidebar({
   clientSlug,
   pathname,
   activeSection,
+  dateRange,
 }: {
   clientSlug: string
   pathname: string
   activeSection: string | null
+  dateRange: string | null
 }) {
   const clients = getAllClients()
   const client = clients.find((c) => c.slug === clientSlug)
@@ -128,10 +130,13 @@ function ClientSidebar({
             </p>
             {client.enabledReports.map((slug) => {
               const isActive = isOnReports && (activeSection === slug || (!activeSection && slug === client.enabledReports[0]))
+              const linkParams = new URLSearchParams()
+              linkParams.set('section', slug)
+              if (dateRange) linkParams.set('dateRange', dateRange)
               return (
                 <Link
                   key={slug}
-                  href={`/dashboard/${clientSlug}/reports?section=${slug}`}
+                  href={`/dashboard/${clientSlug}/reports?${linkParams.toString()}`}
                   className={cn(
                     'rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors',
                     isActive
