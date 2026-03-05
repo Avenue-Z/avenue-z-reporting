@@ -162,7 +162,11 @@ export function DateRangePicker({ value, onChange }: DateRangePickerProps) {
               onSelect={handleCalendarSelect}
               numberOfMonths={2}
               disabled={{ after: new Date() }}
+              showOutsideDays={false}
               className="!bg-transparent"
+              classNames={{
+                today: 'text-white font-bold',
+              }}
             />
 
             {/* Custom range footer */}
