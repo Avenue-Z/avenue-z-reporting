@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -8,12 +9,33 @@ import { REPORT_NAMES } from '@/lib/constants'
 import { getAllClients } from '@/lib/clients.config'
 import {
   LayoutGrid,
-  FileText,
   Link2,
-  LogOut,
   ChevronLeft,
+  Settings,
+  LogOut,
 } from 'lucide-react'
 import { AvenueZLogo } from './avenue-z-logo'
+
+// Generate a consistent color from a string
+const AVATAR_COLORS = [
+  'bg-brand-yellow text-black',
+  'bg-brand-green text-black',
+  'bg-brand-cyan text-black',
+  'bg-brand-blue text-white',
+  'bg-brand-purple text-white',
+]
+
+function getAvatarColor(name: string) {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length]
+}
+
+function getInitial(name: string) {
+  return name.charAt(0).toUpperCase()
+}
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -38,42 +60,103 @@ function MainSidebar({ pathname }: { pathname: string }) {
   const clients = getAllClients()
 
   return (
-    <aside className="sticky top-0 flex h-screen w-60 flex-col border-r border-white/[0.06] bg-bg-surface">
-      <div className="px-6 pt-8">
-        <Logo />
-        <div className="divider-full mb-4" />
+    <aside className="flex h-screen w-64 flex-col bg-bg-surface">
+      {/* Logo */}
+      <div className="flex h-16 shrink-0 items-center px-6">
+        <Link href="/dashboard" className="text-white">
+          <AvenueZLogo height={20} />
+        </Link>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-6 pb-4">
-        <SidebarLink
-          href="/dashboard"
-          icon={LayoutGrid}
-          label="All Clients"
-          isActive={pathname === '/dashboard'}
-        />
-        <SidebarLink
-          href="/dashboard/connections"
-          icon={Link2}
-          label="Connections"
-          isActive={pathname === '/dashboard/connections'}
-        />
+      {/* Navigation */}
+      <nav className="flex flex-1 flex-col px-3">
+        <ul className="flex flex-col gap-1">
+          <li>
+            <NavLink
+              href="/dashboard"
+              icon={LayoutGrid}
+              label="Dashboard"
+              isActive={pathname === '/dashboard'}
+            />
+          </li>
+          <li>
+            <NavLink
+              href="/dashboard/connections"
+              icon={Link2}
+              label="Connections"
+              isActive={pathname === '/dashboard/connections'}
+            />
+          </li>
+          <li>
+            <NavLink
+              href="/dashboard/settings"
+              icon={Settings}
+              label="Settings"
+              isActive={pathname === '/dashboard/settings'}
+            />
+          </li>
+        </ul>
 
-        <p className="mb-1 mt-5 px-4 text-[11px] font-extrabold uppercase tracking-widest text-text-muted">
-          Clients
-        </p>
-        {clients.map((client) => (
-          <SidebarLink
-            key={client.slug}
-            href={`/dashboard/${client.slug}/reports`}
-            icon={FileText}
-            label={client.name}
-            isActive={pathname.startsWith(`/dashboard/${client.slug}`)}
-          />
-        ))}
+        {/* Clients section */}
+        <div className="mt-6">
+          <p className="mb-2 px-3 text-xs font-semibold text-text-muted">
+            Your clients
+          </p>
+          <ul className="flex flex-col gap-1">
+            {clients.map((client) => {
+              const isActive = pathname.startsWith(`/dashboard/${client.slug}`)
+              return (
+                <li key={client.slug}>
+                  <Link
+                    href={`/dashboard/${client.slug}/reports`}
+                    className={cn(
+                      'group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold transition-colors',
+                      isActive
+                        ? 'bg-white/[0.08] text-white'
+                        : 'text-text-muted hover:bg-white/[0.04] hover:text-white'
+                    )}
+                  >
+                    {client.logoUrl ? (
+                      <Image
+                        src={client.logoUrl}
+                        alt={client.name}
+                        width={24}
+                        height={24}
+                        className="h-6 w-6 shrink-0 rounded-md object-cover"
+                      />
+                    ) : (
+                      <span className={cn(
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[11px] font-bold',
+                        isActive
+                          ? getAvatarColor(client.name)
+                          : 'border border-white/[0.12] text-text-muted group-hover:text-white'
+                      )}>
+                        {getInitial(client.name)}
+                      </span>
+                    )}
+                    <span className="truncate">{client.name}</span>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </nav>
 
-      <div className="border-t border-white/[0.06] px-6 py-4">
-        <SignOutButton />
+      {/* User section */}
+      <div className="mt-auto border-t border-white/[0.06] p-3">
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:bg-white/[0.04] hover:text-white"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-xs font-bold text-white">
+              AZ
+            </span>
+            <span className="flex-1 truncate text-left">Avenue Z</span>
+            <LogOut className="h-4 w-4 shrink-0 opacity-50" />
+          </button>
+        </form>
       </div>
     </aside>
   )
@@ -96,78 +179,109 @@ function ClientSidebar({
   const isOnReports = pathname === `/dashboard/${clientSlug}/reports`
 
   return (
-    <aside className="sticky top-0 flex h-screen w-60 flex-col border-r border-white/[0.06] bg-bg-surface">
-      <div className="px-6 pt-8">
-        <Logo />
-        <div className="divider-full mb-4" />
+    <aside className="flex h-screen w-64 flex-col bg-bg-surface">
+      {/* Logo */}
+      <div className="flex h-16 shrink-0 items-center px-6">
+        <Link href="/dashboard" className="text-white">
+          <AvenueZLogo height={20} />
+        </Link>
       </div>
 
-      <nav className="flex flex-1 flex-col overflow-y-auto px-6 pb-4">
-        {/* Back link */}
+      {/* Back + Client name */}
+      <div className="px-3">
         <Link
           href="/dashboard"
-          className="mb-5 flex items-center gap-2 text-xs font-bold text-text-muted transition-colors hover:text-white"
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:bg-white/[0.04] hover:text-white"
         >
-          <ChevronLeft className="h-3 w-3" />
+          <ChevronLeft className="h-4 w-4" />
           All Clients
         </Link>
 
-        {/* Client name */}
-        <div className="mb-4 px-1">
-          <p className="text-[11px] font-extrabold uppercase tracking-widest text-text-muted">
-            Client
-          </p>
-          <p className="mt-0.5 text-base font-extrabold text-white">{clientName}</p>
+        <div className="mt-3 flex items-center gap-3 px-3 pb-4">
+          {client?.logoUrl ? (
+            <Image
+              src={client.logoUrl}
+              alt={clientName}
+              width={32}
+              height={32}
+              className="h-8 w-8 shrink-0 rounded-md object-cover"
+            />
+          ) : (
+            <span className={cn(
+              'flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold',
+              getAvatarColor(clientName)
+            )}>
+              {getInitial(clientName)}
+            </span>
+          )}
+          <span className="truncate text-sm font-bold text-white">{clientName}</span>
         </div>
+      </div>
 
-        <div className="divider-full mb-4" />
-
-        {/* Report section tabs */}
+      {/* Report section tabs */}
+      <nav className="flex flex-1 flex-col overflow-y-auto border-t border-white/[0.06] px-3 pt-4">
         {client && (
-          <div className="flex flex-col gap-0.5">
-            <p className="mb-2 px-1 text-[11px] font-extrabold uppercase tracking-widest text-text-muted">
-              Report Sections
+          <>
+            <p className="mb-2 px-3 text-xs font-semibold text-text-muted">
+              Report sections
             </p>
-            {client.enabledReports.map((slug) => {
-              const isActive = isOnReports && (activeSection === slug || (!activeSection && slug === client.enabledReports[0]))
-              const linkParams = new URLSearchParams()
-              linkParams.set('section', slug)
-              if (dateRange) linkParams.set('dateRange', dateRange)
-              return (
-                <Link
-                  key={slug}
-                  href={`/dashboard/${clientSlug}/reports?${linkParams.toString()}`}
-                  className={cn(
-                    'rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors',
-                    isActive
-                      ? 'bg-white/[0.1] font-bold text-white'
-                      : 'text-text-muted hover:bg-white/[0.06] hover:text-white'
-                  )}
-                >
-                  {REPORT_NAMES[slug] ?? slug}
-                </Link>
-              )
-            })}
-          </div>
+            <ul className="flex flex-col gap-0.5">
+              {client.enabledReports.map((slug) => {
+                const isActive = isOnReports && (activeSection === slug || (!activeSection && slug === client.enabledReports[0]))
+                const linkParams = new URLSearchParams()
+                linkParams.set('section', slug)
+                if (dateRange) linkParams.set('dateRange', dateRange)
+                return (
+                  <li key={slug}>
+                    <Link
+                      href={`/dashboard/${clientSlug}/reports?${linkParams.toString()}`}
+                      className={cn(
+                        'block rounded-md px-3 py-2 text-sm font-semibold transition-colors',
+                        isActive
+                          ? 'bg-white/[0.08] text-white'
+                          : 'text-text-muted hover:bg-white/[0.04] hover:text-white'
+                      )}
+                    >
+                      {REPORT_NAMES[slug] ?? slug}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
         )}
+
+        {/* Auth Hub link */}
+        <div className="mt-4 border-t border-white/[0.06] pt-4">
+          <NavLink
+            href={`/dashboard/${clientSlug}/auth`}
+            icon={Link2}
+            label="Connections"
+            isActive={pathname === `/dashboard/${clientSlug}/auth`}
+          />
+        </div>
       </nav>
 
-      <div className="border-t border-white/[0.06] px-6 py-4">
-        <SignOutButton />
+      {/* User section */}
+      <div className="border-t border-white/[0.06] p-3">
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:bg-white/[0.04] hover:text-white"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-xs font-bold text-white">
+              AZ
+            </span>
+            <span className="flex-1 truncate text-left">Avenue Z</span>
+            <LogOut className="h-4 w-4 shrink-0 opacity-50" />
+          </button>
+        </form>
       </div>
     </aside>
   )
 }
 
-function Logo() {
-  return (
-    <Link href="/dashboard" className="mb-6 block text-white">
-      <AvenueZLogo height={22} />
-    </Link>
-  )
-}
-
-function SidebarLink({
+function NavLink({
   href,
   icon: Icon,
   label,
@@ -182,28 +296,14 @@ function SidebarLink({
     <Link
       href={href}
       className={cn(
-        'flex items-center gap-3 rounded-[100px] px-4 py-2.5 text-sm font-bold transition-colors',
+        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold transition-colors',
         isActive
-          ? 'bg-white text-black'
-          : 'text-text-muted hover:bg-bg-subtle hover:text-white'
+          ? 'bg-white/[0.08] text-white'
+          : 'text-text-muted hover:bg-white/[0.04] hover:text-white'
       )}
     >
-      <Icon className="h-4 w-4" />
+      <Icon className="h-5 w-5 shrink-0" />
       {label}
     </Link>
-  )
-}
-
-function SignOutButton() {
-  return (
-    <form action={signOutAction}>
-      <button
-        type="submit"
-        className="flex w-full items-center gap-3 rounded-[100px] px-4 py-2.5 text-sm font-bold text-text-muted transition-colors hover:bg-bg-subtle hover:text-white"
-      >
-        <LogOut className="h-4 w-4" />
-        Sign Out
-      </button>
-    </form>
   )
 }

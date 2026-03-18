@@ -18,6 +18,7 @@ export type ReportSlug =
   | 'hubspot-performance'
   | 'reddit-ads'
   | 'bing-ads'
+  | 'conversational-summary'
 
 export interface ClientConfig {
   slug: string
@@ -36,10 +37,11 @@ export const clients: ClientConfig[] = [
   {
     slug: 'fun-spot',
     name: 'Fun Spot',
-    logoUrl: '/logos/fun-spot.png',
+    logoUrl: '/logos/fun-spot.webp',
     smWorkspaceId: 'ws_funspot_123',
     smApiKey: 'SUPERMETRICS_API_KEY_FUN_SPOT',
     enabledReports: [
+      'conversational-summary',
       'exec-summary',
       'ga4',
       'meta-ads',

@@ -17,6 +17,7 @@ import { ShopifyPerformanceReport } from '@/components/report-sections/shopify-p
 import { HubSpotPerformanceReport } from '@/components/report-sections/hubspot-performance'
 import { RedditAdsReport } from '@/components/report-sections/reddit-ads'
 import { BingAdsReport } from '@/components/report-sections/bing-ads'
+import { ConversationalSummary } from '@/components/report-sections/conversational-summary'
 import { ReportDateRange } from './[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
 
@@ -64,6 +65,8 @@ function getReportComponent(slug: ReportSlug, clientSlug: string, dateRange: str
       return <RedditAdsReport clientSlug={clientSlug} dateRange={dateRange} />
     case 'bing-ads':
       return <BingAdsReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'conversational-summary':
+      return <ConversationalSummary clientSlug={clientSlug} dateRange={dateRange} />
   }
 }
 

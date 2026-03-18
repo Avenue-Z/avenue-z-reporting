@@ -38,4 +38,5 @@ export const REPORT_NAMES: Record<string, string> = {
   'hubspot-performance': 'HubSpot Performance',
   'reddit-ads': 'Reddit Ads',
   'bing-ads': 'Microsoft Ads',
+  'conversational-summary': 'Conversational Summary',
 }
