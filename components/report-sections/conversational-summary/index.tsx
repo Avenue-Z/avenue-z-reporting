@@ -21,6 +21,117 @@ function formatPeriod(startDate: string, endDate: string): string {
   return `${start.toLocaleDateString('en-US', opts)} – ${end.toLocaleDateString('en-US', opts)}`
 }
 
+function getFallbackSummary(clientSlug: string): ConversationalSummaryResponse {
+  if (clientSlug === 'kind-patches') {
+    return {
+      headline: 'Kind Patches is gaining strong traction across DTC and social commerce.',
+      greeting:
+        'Here\u2019s your performance snapshot for the selected period. Your wellness patch brand is seeing healthy growth across paid social, TikTok Shop, and organic search \u2014 with particularly strong momentum in e-commerce conversions.',
+      highlights: [
+        {
+          label: 'Website Traffic',
+          value: '42,180 sessions',
+          delta: '+18.7%',
+          sentiment: 'positive',
+          narrative:
+            'Site traffic continues to climb, driven by a mix of Meta Ads, TikTok referral traffic, and branded organic search. New visitor rate is at 64%, indicating strong top-of-funnel discovery for the patch category.',
+        },
+        {
+          label: 'TikTok Shop',
+          value: '$87,340 revenue',
+          delta: '+34.2%',
+          sentiment: 'positive',
+          narrative:
+            'TikTok Shop is the fastest-growing channel. Affiliate creator content is driving 26% of shop revenue, with the Variety Pack (10) and Gold Collection leading as top sellers. Live shopping events are converting at 2x the rate of organic shop views.',
+        },
+        {
+          label: 'Meta Ads',
+          value: '$8,400 spend',
+          delta: '+5.1%',
+          sentiment: 'positive',
+          narrative:
+            'Meta campaigns are delivering efficient reach for the wellness patch audience. Prospecting campaigns targeting health-conscious consumers are outperforming retargeting on CPA, and UGC-style creatives continue to lead in CTR.',
+        },
+        {
+          label: 'E-Commerce',
+          value: '3,842 orders',
+          delta: '+22.4%',
+          sentiment: 'positive',
+          narrative:
+            'Order volume hit a new monthly high. AOV is $36.12, up slightly from last period. The Custom Patch Bundle is driving higher cart values. Refund rate remains low at 3.4%.',
+        },
+        {
+          label: 'Email & Retention',
+          value: '24.8% open rate',
+          delta: '+2.1%',
+          sentiment: 'neutral',
+          narrative:
+            'Email performance is steady. The "Patch of the Month" campaign drove the highest click-through rate at 5.2%. Subscription reorder reminders are converting at 12%, a strong signal for retention.',
+        },
+      ],
+      channelBreakdown: [
+        { channel: 'TikTok Shop', spend: '$3,200', conversions: '2,418', cpa: '$1.32', roas: '27.3x' },
+        { channel: 'Meta Ads', spend: '$8,400', conversions: '892', cpa: '$9.42', roas: '4.1x' },
+        { channel: 'Google Ads', spend: '$4,100', conversions: '348', cpa: '$11.78', roas: '3.2x' },
+        { channel: 'Organic Search', spend: '$0', conversions: '412', cpa: '\u2014', roas: '\u2014' },
+        { channel: 'Email', spend: '$0', conversions: '286', cpa: '\u2014', roas: '\u2014' },
+      ],
+      callouts: [
+        { type: 'win', text: 'TikTok Shop ROAS is 27.3x \u2014 affiliate creator strategy is paying off massively with low customer acquisition cost.' },
+        { type: 'win', text: 'The Custom Patch Bundle upsell increased AOV by 14% since launch. Recommend featuring it more prominently in Meta ad funnels.' },
+        { type: 'watch', text: 'Google Ads CPA climbed 8% \u2014 consider pausing broad match wellness keywords and focusing on branded + competitor terms.' },
+        { type: 'watch', text: 'TikTok Shop refund rate (3.4%) is slightly above the 3% benchmark. Monitor whether specific SKUs are driving returns.' },
+      ],
+      closing:
+        'Kind Patches is in a strong growth phase. TikTok Shop is the breakout channel and should be scaled aggressively through creator partnerships and live events. Meta remains the workhorse for prospecting, and Google Ads needs tightening on non-branded terms. The product-market fit for transdermal wellness patches is clearly resonating \u2014 focus on expanding SKU visibility and building subscription retention loops.',
+    }
+  }
+
+  // Default fallback (Fun Spot / generic)
+  return {
+    headline: 'Strong momentum across paid and organic channels.',
+    greeting:
+      'Here\u2019s your performance snapshot for the selected period. Overall, your marketing is trending in the right direction with meaningful gains in traffic, conversions, and efficiency.',
+    highlights: [
+      {
+        label: 'Website Traffic',
+        value: '89,234 sessions',
+        delta: 'N/A',
+        sentiment: 'positive',
+        narrative:
+          'Traffic is strong, driven primarily by organic search and paid social. New users are growing, signaling healthy top-of-funnel reach.',
+      },
+      {
+        label: 'Meta Ads',
+        value: '$5,200 spend',
+        delta: 'N/A',
+        sentiment: 'positive',
+        narrative:
+          'Meta campaigns are delivering consistent reach and conversions. CTR and CPA are within target ranges.',
+      },
+      {
+        label: 'Google Ads',
+        value: '$4,100 spend',
+        delta: 'N/A',
+        sentiment: 'positive',
+        narrative:
+          'Google Ads performance is steady with strong conversion rates on branded search campaigns.',
+      },
+    ],
+    channelBreakdown: [
+      { channel: 'Meta Ads', spend: '$5,200', conversions: '612', cpa: '$8.50', roas: '2.9x' },
+      { channel: 'Google Ads', spend: '$4,100', conversions: '648', cpa: '$6.33', roas: '3.8x' },
+      { channel: 'Organic Search', spend: '$0', conversions: '275', cpa: '\u2014', roas: '\u2014' },
+    ],
+    callouts: [
+      { type: 'win', text: 'Blended CPA is well below target, indicating efficient spend allocation across channels.' },
+      { type: 'watch', text: 'Monitor ad frequency on Meta to avoid audience fatigue as campaigns scale.' },
+    ],
+    closing:
+      'Overall, this is a solid period. Focus on scaling efficient channels and refreshing creative where frequency is climbing. Detailed breakdowns are available in the individual report sections.',
+  }
+}
+
 export async function ConversationalSummary({ clientSlug, dateRange }: ConversationalSummaryProps) {
   getClientBySlug(clientSlug) // validate client exists
 
@@ -41,49 +152,8 @@ export async function ConversationalSummary({ clientSlug, dateRange }: Conversat
     const { startDate, endDate } = parseDateRange(dateRange)
     period = formatPeriod(startDate, endDate)
 
-    // Fallback demo data
-    summary = {
-      headline: 'Strong momentum across paid and organic channels.',
-      greeting:
-        'Here\u2019s your performance snapshot for the selected period. Overall, your marketing is trending in the right direction with meaningful gains in traffic, conversions, and efficiency.',
-      highlights: [
-        {
-          label: 'Website Traffic',
-          value: '89,234 sessions',
-          delta: 'N/A',
-          sentiment: 'positive',
-          narrative:
-            'Traffic is strong, driven primarily by organic search and paid social. New users are growing, signaling healthy top-of-funnel reach.',
-        },
-        {
-          label: 'Meta Ads',
-          value: '$5,200 spend',
-          delta: 'N/A',
-          sentiment: 'positive',
-          narrative:
-            'Meta campaigns are delivering consistent reach and conversions. CTR and CPA are within target ranges.',
-        },
-        {
-          label: 'Website Traffic',
-          value: '45,000 sessions',
-          delta: 'N/A',
-          sentiment: 'positive',
-          narrative:
-            'Website traffic is healthy with strong engagement rates. Organic search and paid social are the top traffic drivers.',
-        },
-      ],
-      channelBreakdown: [
-        { channel: 'Meta Ads', spend: '$5,200', conversions: '612', cpa: '$8.50', roas: '2.9x' },
-        { channel: 'Organic Search', spend: '$0', conversions: '275', cpa: '\u2014', roas: '\u2014' },
-        { channel: 'Direct', spend: '$0', conversions: '180', cpa: '\u2014', roas: '\u2014' },
-      ],
-      callouts: [
-        { type: 'win', text: 'Blended CPA is well below target, indicating efficient spend allocation across channels.' },
-        { type: 'watch', text: 'Monitor ad frequency on Meta to avoid audience fatigue as campaigns scale.' },
-      ],
-      closing:
-        'Overall, this is a solid period. Focus on scaling efficient channels and refreshing creative where frequency is climbing. Detailed breakdowns are available in the individual report sections.',
-    }
+    // Fallback demo data — per client
+    summary = getFallbackSummary(clientSlug)
   }
 
   return (

@@ -39,4 +39,7 @@ export const REPORT_NAMES: Record<string, string> = {
   'reddit-ads': 'Reddit Ads',
   'bing-ads': 'Microsoft Ads',
   'conversational-summary': 'Conversational Summary',
+  ffci: 'FFCI',
+  'tiktok-shop': 'TikTok Shop',
+  'pr-placements': 'PR Placements',
 }

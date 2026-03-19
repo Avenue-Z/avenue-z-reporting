@@ -18,6 +18,9 @@ import { HubSpotPerformanceReport } from '@/components/report-sections/hubspot-p
 import { RedditAdsReport } from '@/components/report-sections/reddit-ads'
 import { BingAdsReport } from '@/components/report-sections/bing-ads'
 import { ConversationalSummary } from '@/components/report-sections/conversational-summary'
+import { FFCIReport } from '@/components/report-sections/ffci'
+import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
+import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
 import { ReportDateRange } from './[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
 
@@ -67,6 +70,12 @@ function getReportComponent(slug: ReportSlug, clientSlug: string, dateRange: str
       return <BingAdsReport clientSlug={clientSlug} dateRange={dateRange} />
     case 'conversational-summary':
       return <ConversationalSummary clientSlug={clientSlug} dateRange={dateRange} />
+    case 'ffci':
+      return <FFCIReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'tiktok-shop':
+      return <TikTokShopReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'pr-placements':
+      return <PRPlacementsReport clientSlug={clientSlug} dateRange={dateRange} />
   }
 }
 
