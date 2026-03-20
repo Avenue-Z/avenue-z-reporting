@@ -1,0 +1,193 @@
+Chat
+POST
+https://instance-name-be.glean.com/rest/api/v1/chat#stream
+Have a conversation with Glean AI.
+
+Request
+Query Parameters
+timezoneOffset
+integer
+The offset of the client's timezone in minutes from UTC. e.g. PDT is -420 because it's 7 hours behind UTC.
+
+application/json
+Bodyrequired
+Includes chat history for Glean AI to respond to.
+
+messages
+ChatMessage[]
+required
+A list of chat messages, from most recent to least recent. At least one message must specify a USER author.
+
+Array [
+agentConfig
+AgentConfig
+author
+Possible values: [USER, GLEAN_AI]
+
+Default value: USER
+citations
+ChatMessageCitation[]
+deprecated
+uploadedFileIds
+string[]
+IDs of files uploaded in the message that are referenced to generate the answer.
+
+fragments
+object[]
+ts
+string
+Response timestamp of the message.
+
+messageId
+string
+A unique server-side generated ID used to identify a message, automatically populated for any USER authored messages.
+
+messageTrackingToken
+string
+Opaque tracking token generated server-side.
+
+messageType
+string
+Semantically groups content of a certain type. It can be used for purposes such as differential UI treatment. USER authored messages should be of type CONTENT and do not need messageType specified.
+
+Enum Value	Description
+UPDATE	An intermediate state message for progress updates.
+CONTENT	A user query or response message.
+CONTEXT	A message providing context in addition to the user query.
+CONTROL	Control signal for message streaming.
+CONTROL_START	Control signal indicating the start of a message stream.
+CONTROL_FINISH	Control signal indicating the end of a message stream.
+CONTROL_CANCEL	Control signal indicating the message stream was cancelled.
+CONTROL_RETRY	Indicates the message streaming needed to be retried.
+CONTROL_UNKNOWN	Fallback control signal for unrecognized control types.
+DEBUG	A debug message. Strictly used internally.
+DEBUG_EXTERNAL	A debug message to be used while debugging Action creation.
+ERROR	A message that describes an error while processing the request.
+HEADING	A heading message used to distinguish different sections of the holistic response.
+WARNING	A warning message to be shown to the user.
+SERVER_TOOL	A message used to for server-side tool auth/use, for request and response.
+Possible values: [UPDATE, CONTENT, CONTEXT, CONTROL, CONTROL_START, CONTROL_FINISH, CONTROL_CANCEL, CONTROL_RETRY, CONTROL_UNKNOWN, DEBUG, DEBUG_EXTERNAL, ERROR, HEADING, WARNING, SERVER_TOOL]
+
+Default value: CONTENT
+hasMoreFragments
+boolean
+deprecated
+Signals there are additional response fragments incoming.
+
+]
+sessionInfo
+SessionInfo
+Optional object for tracking the session used by the client and for debugging purposes.
+
+sessionTrackingToken
+string
+A unique token for this session. A new session (and token) is created when the user issues a request from a new tab or when our server hasn't seen activity for more than 10 minutes from a tab.
+
+tabId
+string
+A unique id for all requests a user makes from a given tab, no matter how far apart. A new tab id is only generated when a user issues a request from a new tab.
+
+lastSeen
+string<date-time>
+The last time the server saw this token.
+
+lastQuery
+string
+The last query seen by the server.
+
+saveChat
+boolean
+Save the current interaction as a Chat for the user to access and potentially continue later.
+
+chatId
+string
+The id of the Chat that context should be retrieved from and messages added to. An empty id starts a new Chat, and the Chat is saved if saveChat is true.
+
+agentConfig
+AgentConfig
+Describes the agent that will execute the request.
+
+agent
+string
+Name of the agent.
+
+Enum Value	Description
+DEFAULT	Integrates with your company's knowledge. This will soon be deprecated in favor of the FAST and ADVANCED agent values
+GPT	Communicates directly with the LLM. This will soon be deprecated in favor of the FAST and ADVANCED agent values
+UNIVERSAL	Uses both company and web knowledge. This will soon be deprecated in favor of the FAST and ADVANCED agent values
+FAST	Uses an agent powered by the agentic engine that responds faster but may have lower quality results. Requires the agentic engine to be enabled in the deployment.
+ADVANCED	Uses an agent powered by the agentic engine that thinks for longer and potentially makes more LLM calls to return higher quality results. Requires the agentic engine to be enabled in the deployment.
+AUTO	Uses an agent powered by the agentic engine that routes between reasoning efforts based on the question and context.
+Possible values: [DEFAULT, GPT, UNIVERSAL, FAST, ADVANCED, AUTO]
+
+toolSets
+object
+The types of tools that the agent is allowed to use. Only works with FAST and ADVANCED agent values
+
+enableWebSearch
+boolean
+Whether the agent is allowed to use web search (default: true).
+
+enableCompanyTools
+boolean
+Whether the agent is allowed to search internal company resources (default: true).
+
+mode
+string
+Top level modes to run GleanChat in.
+
+Enum Value	Description
+DEFAULT	Used if no mode supplied.
+QUICK	Deprecated.
+Possible values: [DEFAULT, QUICK]
+
+useImageGeneration
+boolean
+Whether the agent should create an image.
+
+inclusions
+object
+exclusions
+object
+timeoutMillis
+integer
+Timeout in milliseconds for the request. A 408 error will be returned if handling the request takes longer.
+
+Example: 30000
+applicationId
+string
+The ID of the application this request originates from, used to determine the configuration of underlying chat processes. This should correspond to the ID set during admin setup. If not specified, the default chat experience will be used.
+
+agentId
+string
+The ID of the Agent that should process this chat request. Only Agents with trigger set to 'User chat message' are invokable through this API. If not specified, the default chat experience will be used.
+
+stream
+boolean
+If set, response lines will be streamed one-by-one as they become available. Each will be a ChatResponse, formatted as JSON, and separated by a new line. If false, the entire response will be returned at once. Note that if this is set and the model being used does not support streaming, the model's response will not be streamed, but other messages from the endpoint still will be.
+
+Example:
+
+from glean.api_client import Glean, models
+import os
+
+
+with Glean(
+    api_token=os.getenv("GLEAN_API_TOKEN", ""),
+    instance=os.getenv("GLEAN_INSTANCE", ""),
+) as glean:
+
+    res = glean.client.chat.create_stream(messages=[
+        {
+            "fragments": [
+                models.ChatMessageFragment(
+                    text="What are the company holidays this year?",
+                ),
+            ],
+        },
+    ], timeout_millis=30000)
+
+    # Handle response
+    print(res)
+
+

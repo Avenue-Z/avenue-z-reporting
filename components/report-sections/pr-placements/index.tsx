@@ -67,12 +67,21 @@ function sentimentLabel(s: number | null): string {
   return s.toFixed(2)
 }
 
-// Build daily coverage timeline
+// Build daily coverage timeline — uses placement dates to determine range
 function buildTimeline(placements: Placement[]): { date: string; count: number }[] {
+  if (placements.length === 0) return []
+
+  // Find the date range from the placements themselves
+  const dates = placements.map((p) => p.date).sort()
+  const earliest = new Date(dates[0] + 'T00:00:00')
+  const latest = new Date(dates[dates.length - 1] + 'T00:00:00')
+
+  // Pad 3 days before and after
+  const start = new Date(earliest.getTime() - 3 * 86400000)
+  const end = new Date(Math.max(latest.getTime() + 3 * 86400000, Date.now()))
+
   const counts: Record<string, number> = {}
-  for (let i = 30; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i)
+  for (let d = new Date(start); d <= end; d = new Date(d.getTime() + 86400000)) {
     counts[d.toISOString().split('T')[0]] = 0
   }
   placements.forEach((p) => {

@@ -21,6 +21,7 @@ import { ConversationalSummary } from '@/components/report-sections/conversation
 import { FFCIReport } from '@/components/report-sections/ffci'
 import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
 import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
+import { MeetingPrepBrief } from '@/components/meeting-prep'
 import { ReportDateRange } from './[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
 
@@ -76,6 +77,8 @@ function getReportComponent(slug: ReportSlug, clientSlug: string, dateRange: str
       return <TikTokShopReport clientSlug={clientSlug} dateRange={dateRange} />
     case 'pr-placements':
       return <PRPlacementsReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'meeting-prep':
+      return <MeetingPrepBrief clientSlug={clientSlug} clientName={getClientBySlug(clientSlug)?.name ?? clientSlug} />
   }
 }
 

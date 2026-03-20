@@ -42,4 +42,5 @@ export const REPORT_NAMES: Record<string, string> = {
   ffci: 'FFCI',
   'tiktok-shop': 'TikTok Shop',
   'pr-placements': 'PR Placements',
+  'meeting-prep': 'Meeting Prep',
 }

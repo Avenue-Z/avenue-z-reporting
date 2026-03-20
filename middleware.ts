@@ -1,38 +1,41 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
-// Auth temporarily bypassed for UI preview
-export default function middleware() {
+export default function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
+  const raw = req.cookies.get('demo-session')?.value
+
+  // No session → redirect to login
+  if (!raw) {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  let session: { role: string; clientSlug?: string }
+  try {
+    session = JSON.parse(raw)
+  } catch {
+    return NextResponse.redirect(new URL('/login', req.url))
+  }
+
+  // Dashboard routes — internal only
+  if (pathname.startsWith('/dashboard')) {
+    if (session.role !== 'internal') {
+      return NextResponse.redirect(new URL('/login', req.url))
+    }
+  }
+
+  // Portal routes — client must match their own slug
+  if (pathname.startsWith('/portal')) {
+    if (session.role !== 'client') {
+      return NextResponse.redirect(new URL('/login', req.url))
+    }
+    const slugInUrl = pathname.split('/')[2]
+    if (session.clientSlug !== slugInUrl) {
+      return NextResponse.redirect(new URL('/login', req.url))
+    }
+  }
+
   return NextResponse.next()
 }
-
-// import { auth } from '@/auth'
-//
-// export default auth((req) => {
-//   const { pathname } = req.nextUrl
-//   const session = req.auth
-//
-//   if (!session) {
-//     return Response.redirect(new URL('/login', req.url))
-//   }
-//
-//   // Internal routes — Avenue Z team only
-//   if (pathname.startsWith('/dashboard')) {
-//     if (
-//       session.user.role !== 'INTERNAL_ADMIN' &&
-//       session.user.role !== 'INTERNAL_ANALYST'
-//     ) {
-//       return Response.redirect(new URL('/unauthorized', req.url))
-//     }
-//   }
-//
-//   // Client portal — scoped to their own slug only
-//   if (pathname.startsWith('/portal')) {
-//     const slugInUrl = pathname.split('/')[2]
-//     if (session.user.clientSlug !== slugInUrl) {
-//       return Response.redirect(new URL('/unauthorized', req.url))
-//     }
-//   }
-// })
 
 export const config = {
   matcher: ['/dashboard/:path*', '/portal/:path*'],

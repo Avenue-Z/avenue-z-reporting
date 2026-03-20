@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { signOutAction } from '@/app/actions/auth'
+import { demoLogout } from '@/app/actions/demo-auth'
 import { REPORT_NAMES } from '@/lib/constants'
 import { getAllClients } from '@/lib/clients.config'
 import {
@@ -145,7 +145,7 @@ function MainSidebar({ pathname }: { pathname: string }) {
 
       {/* User section */}
       <div className="mt-auto border-t border-white/[0.06] p-3">
-        <form action={signOutAction}>
+        <form action={demoLogout}>
           <button
             type="submit"
             className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:bg-white/[0.04] hover:text-white"
@@ -231,19 +231,35 @@ function ClientSidebar({
                 const linkParams = new URLSearchParams()
                 linkParams.set('section', slug)
                 if (dateRange) linkParams.set('dateRange', dateRange)
+                const isMeetingPrep = slug === 'meeting-prep'
                 return (
                   <li key={slug}>
-                    <Link
-                      href={`/dashboard/${clientSlug}/reports?${linkParams.toString()}`}
-                      className={cn(
-                        'block rounded-md px-3 py-2 text-sm font-semibold transition-colors',
-                        isActive
-                          ? 'bg-white/[0.08] text-white'
-                          : 'text-text-muted hover:bg-white/[0.04] hover:text-white'
-                      )}
-                    >
-                      {REPORT_NAMES[slug] ?? slug}
-                    </Link>
+                    {isMeetingPrep ? (
+                      <Link
+                        href={`/dashboard/${clientSlug}/reports?${linkParams.toString()}`}
+                        className={cn(
+                          'block rounded-[100px] px-4 py-2 text-center text-sm font-bold text-black transition-opacity hover:opacity-90',
+                          isActive ? 'opacity-100' : 'opacity-80'
+                        )}
+                        style={{
+                          backgroundImage: 'linear-gradient(135deg, #FFFC60, #60FF80, #60FDFF)',
+                        }}
+                      >
+                        {REPORT_NAMES[slug] ?? slug}
+                      </Link>
+                    ) : (
+                      <Link
+                        href={`/dashboard/${clientSlug}/reports?${linkParams.toString()}`}
+                        className={cn(
+                          'block rounded-md px-3 py-2 text-sm font-semibold transition-colors',
+                          isActive
+                            ? 'bg-white/[0.08] text-white'
+                            : 'text-text-muted hover:bg-white/[0.04] hover:text-white'
+                        )}
+                      >
+                        {REPORT_NAMES[slug] ?? slug}
+                      </Link>
+                    )}
                   </li>
                 )
               })}
@@ -264,7 +280,7 @@ function ClientSidebar({
 
       {/* User section */}
       <div className="border-t border-white/[0.06] p-3">
-        <form action={signOutAction}>
+        <form action={demoLogout}>
           <button
             type="submit"
             className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-semibold text-text-muted transition-colors hover:bg-white/[0.04] hover:text-white"

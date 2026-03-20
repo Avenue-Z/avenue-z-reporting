@@ -22,6 +22,7 @@ export type ReportSlug =
   | 'ffci'
   | 'tiktok-shop'
   | 'pr-placements'
+  | 'meeting-prep'
 
 export interface PRConfig {
   keywords: string[]
@@ -54,6 +55,7 @@ export const clients: ClientConfig[] = [
     smWorkspaceId: 'ws_funspot_123',
     smApiKey: 'SUPERMETRICS_API_KEY_FUN_SPOT',
     enabledReports: [
+      'meeting-prep',
       'conversational-summary',
       'ffci',
       'pr-placements',
@@ -91,6 +93,7 @@ export const clients: ClientConfig[] = [
     smWorkspaceId: 'ws_kindpatches_001',
     smApiKey: 'SUPERMETRICS_API_KEY_KIND_PATCHES',
     enabledReports: [
+      'meeting-prep',
       'conversational-summary',
       'ffci',
       'pr-placements',

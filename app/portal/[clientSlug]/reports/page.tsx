@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { getClientBySlug } from '@/lib/clients.config'
 import { REPORT_NAMES } from '@/lib/constants'
+import { Header } from '@/components/layout/header'
 import { ReportErrorBoundary } from '@/components/report-sections/error-boundary'
 import { ExecSummary } from '@/components/report-sections/exec-summary'
 import { GA4Report } from '@/components/report-sections/ga4'
@@ -16,8 +17,11 @@ import { ShopifyPerformanceReport } from '@/components/report-sections/shopify-p
 import { HubSpotPerformanceReport } from '@/components/report-sections/hubspot-performance'
 import { RedditAdsReport } from '@/components/report-sections/reddit-ads'
 import { BingAdsReport } from '@/components/report-sections/bing-ads'
-import { PortalReportDateRange } from './[reportSlug]/report-date-range'
-import { PortalReportNav } from './report-nav'
+import { ConversationalSummary } from '@/components/report-sections/conversational-summary'
+import { FFCIReport } from '@/components/report-sections/ffci'
+import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
+import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
+import { ReportDateRange } from '@/app/dashboard/[clientSlug]/reports/[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
 
 function SectionSkeleton() {
@@ -64,6 +68,14 @@ function getReportComponent(slug: ReportSlug, clientSlug: string, dateRange: str
       return <RedditAdsReport clientSlug={clientSlug} dateRange={dateRange} />
     case 'bing-ads':
       return <BingAdsReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'conversational-summary':
+      return <ConversationalSummary clientSlug={clientSlug} dateRange={dateRange} />
+    case 'ffci':
+      return <FFCIReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'tiktok-shop':
+      return <TikTokShopReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'pr-placements':
+      return <PRPlacementsReport clientSlug={clientSlug} dateRange={dateRange} />
   }
 }
 
@@ -90,32 +102,18 @@ export default async function PortalReportPage({
   const reportName = REPORT_NAMES[activeSection] ?? activeSection
 
   return (
-    <div className="mx-auto max-w-6xl px-8 py-12">
-      <div className="mb-6 flex items-end justify-between">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-widest text-text-muted">
-            {client.name}
-          </p>
-          <h1 className="text-3xl font-extrabold uppercase text-white">
-            {reportName}
-          </h1>
-        </div>
-        <PortalReportDateRange value={dateRange} />
-      </div>
+    <>
+      <Header title={reportName} subtitle={client.name}>
+        <ReportDateRange value={dateRange} />
+      </Header>
 
-      <div className="divider-full mb-6" />
-
-      <PortalReportNav
-        sections={client.enabledReports}
-        activeSection={activeSection}
-        clientSlug={clientSlug}
-      />
+      <div className="divider-full mb-8" />
 
       <ReportErrorBoundary sectionName={reportName}>
         <Suspense fallback={<SectionSkeleton />}>
           {getReportComponent(activeSection, clientSlug, dateRange)}
         </Suspense>
       </ReportErrorBoundary>
-    </div>
+    </>
   )
 }

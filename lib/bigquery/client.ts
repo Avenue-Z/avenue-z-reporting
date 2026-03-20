@@ -75,6 +75,14 @@ export interface FunSpotData {
   ga4: GA4Summary
 }
 
+export interface DailySessions {
+  date: string // YYYY-MM-DD
+  sessions: number
+  users: number
+  conversions: number
+  revenue: number
+}
+
 // Account name filters — must match exactly what's in BigQuery
 const ACCOUNT_FILTERS = {
   metaAds: 'Fun Spot America FL',
@@ -176,4 +184,42 @@ export async function fetchFunSpotData(dateRange: string): Promise<FunSpotData> 
       })),
     },
   }
+}
+
+/**
+ * Fetch daily GA4 sessions for a client over a date range.
+ * Used by the FFCI report to correlate PR hits with traffic.
+ */
+export async function fetchDailySessions(
+  ga4Account: string,
+  dateRange: string
+): Promise<DailySessions[]> {
+  const bq = getClient()
+  const { startDate, endDate } = parseDateRange(dateRange)
+  const table = `\`${PROJECT_ID}.${DATASET}.GAWA_GA4_TRAFFIC_ACQUISITION\``
+
+  const [rows] = await bq.query({
+    query: `
+      SELECT
+        DATE AS date,
+        COALESCE(SUM(SESSIONS), 0) AS sessions,
+        COALESCE(SUM(TOTAL_USERS), 0) AS users,
+        COALESCE(SUM(CONVERSIONS), 0) AS conversions,
+        COALESCE(SUM(TOTAL_REVENUE), 0) AS revenue
+      FROM ${table}
+      WHERE DATE BETWEEN @startDate AND @endDate
+        AND PROPERTY_NAME = @ga4Account
+      GROUP BY DATE
+      ORDER BY DATE ASC
+    `,
+    params: { startDate, endDate, ga4Account },
+  })
+
+  return (rows as Record<string, unknown>[]).map((r) => ({
+    date: String(r.date).split('T')[0],
+    sessions: Number(r.sessions ?? 0),
+    users: Number(r.users ?? 0),
+    conversions: Number(r.conversions ?? 0),
+    revenue: Number(r.revenue ?? 0),
+  }))
 }
