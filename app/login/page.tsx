@@ -52,13 +52,17 @@ export default function LoginPage() {
               className="mb-3 flex w-full items-center gap-3 rounded-[100px] bg-[#3a3a3a] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-bg-subtle"
             >
               {client.logoUrl ? (
-                <Image
-                  src={client.logoUrl}
-                  alt={client.name}
-                  width={28}
-                  height={28}
-                  className="h-7 w-7 shrink-0 rounded-full object-cover"
-                />
+                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full overflow-hidden ${
+                  client.slug === 'avenue-z' ? 'bg-black p-1' : ''
+                }`}>
+                  <Image
+                    src={client.logoUrl}
+                    alt={client.name}
+                    width={28}
+                    height={28}
+                    className={client.slug === 'avenue-z' ? 'h-4 w-4 object-contain' : 'h-7 w-7 rounded-full object-cover'}
+                  />
+                </span>
               ) : (
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-extrabold">
                   {client.name.charAt(0)}
