@@ -25,6 +25,7 @@ import { MeetingPrepBrief } from '@/components/meeting-prep'
 import { GoHighLevelReport } from '@/components/report-sections/gohighlevel'
 import { TicketSalesReport } from '@/components/report-sections/ticket-sales'
 import { ExportPdfButton } from '@/components/export-pdf-button'
+import { DataChat } from '@/components/data-chat'
 
 import { ReportDateRange } from './[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
@@ -129,6 +130,8 @@ export default async function ReportPage({
           {getReportComponent(activeSection, clientSlug, dateRange)}
         </Suspense>
       </ReportErrorBoundary>
+
+      <DataChat clientName={client.name} />
     </>
   )
 }

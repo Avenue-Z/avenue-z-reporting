@@ -24,6 +24,7 @@ import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
 import { GoHighLevelReport } from '@/components/report-sections/gohighlevel'
 import { TicketSalesReport } from '@/components/report-sections/ticket-sales'
 import { ExportPdfButton } from '@/components/export-pdf-button'
+import { DataChat } from '@/components/data-chat'
 
 import { ReportDateRange } from '@/app/dashboard/[clientSlug]/reports/[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
@@ -127,6 +128,8 @@ export default async function PortalReportPage({
           {getReportComponent(activeSection, clientSlug, dateRange)}
         </Suspense>
       </ReportErrorBoundary>
+
+      <DataChat clientName={client.name} />
     </>
   )
 }
