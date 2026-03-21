@@ -102,7 +102,7 @@ export default async function PortalReportPage({
   const dateRange = dateRangeParam ?? 'last_30_days'
 
   // Portal: default to first non-internal report (skip meeting-prep)
-  const portalReports = client.enabledReports.filter(s => s !== 'meeting-prep')
+  const portalReports: ReportSlug[] = client.enabledReports.filter(s => s !== 'meeting-prep')
   const activeSection = (
     portalReports.includes(section as ReportSlug)
       ? section
