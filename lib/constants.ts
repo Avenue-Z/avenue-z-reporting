@@ -45,6 +45,8 @@ export const REPORT_NAMES: Record<string, string> = {
   'meeting-prep': 'Meeting Prep',
   'google-search-console': 'Search Console',
   salesforce: 'Salesforce',
+  gohighlevel: 'GoHighLevel',
+  'ticket-sales': 'Ticket Sales',
 }
 
 /** All report slugs in display order (used by sidebar to show all sections) */
@@ -69,4 +71,6 @@ export const ALL_REPORT_SLUGS: string[] = [
   'salesforce',
   'reddit-ads',
   'bing-ads',
+  'gohighlevel',
+  'ticket-sales',
 ]

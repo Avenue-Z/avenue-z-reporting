@@ -22,6 +22,8 @@ import { FFCIReport } from '@/components/report-sections/ffci'
 import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
 import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
 import { MeetingPrepBrief } from '@/components/meeting-prep'
+import { GoHighLevelReport } from '@/components/report-sections/gohighlevel'
+import { TicketSalesReport } from '@/components/report-sections/ticket-sales'
 import { ExportPdfButton } from '@/components/export-pdf-button'
 
 import { ReportDateRange } from './[reportSlug]/report-date-range'
@@ -81,6 +83,10 @@ function getReportComponent(slug: ReportSlug, clientSlug: string, dateRange: str
       return <PRPlacementsReport clientSlug={clientSlug} dateRange={dateRange} />
     case 'meeting-prep':
       return <MeetingPrepBrief clientSlug={clientSlug} clientName={getClientBySlug(clientSlug)?.name ?? clientSlug} />
+    case 'gohighlevel':
+      return <GoHighLevelReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'ticket-sales':
+      return <TicketSalesReport clientSlug={clientSlug} dateRange={dateRange} />
   }
 }
 
@@ -111,7 +117,9 @@ export default async function ReportPage({
     <>
       <Header title={reportName} subtitle={client.name} logoUrl={client.logoUrl}>
         <ExportPdfButton />
-        <ReportDateRange value={dateRange} />
+        {activeSection !== 'conversational-summary' && activeSection !== 'meeting-prep' && (
+          <ReportDateRange value={dateRange} />
+        )}
       </Header>
 
       <div className="divider-full mb-8" />

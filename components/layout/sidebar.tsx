@@ -243,7 +243,7 @@ function ClientSidebar({
               Report sections
             </p>
             <ul className="flex flex-col gap-0.5">
-              {ALL_REPORT_SLUGS.map((slug) => {
+              {ALL_REPORT_SLUGS.filter((slug) => !client.hiddenReports?.includes(slug as any)).map((slug) => {
                 const isEnabled = client.enabledReports.includes(slug as any)
                 const isActive = isEnabled && isOnReports && (activeSection === slug || (!activeSection && slug === client.enabledReports[0]))
                 const linkParams = new URLSearchParams()

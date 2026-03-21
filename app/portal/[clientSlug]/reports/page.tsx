@@ -21,6 +21,8 @@ import { ConversationalSummary } from '@/components/report-sections/conversation
 import { FFCIReport } from '@/components/report-sections/ffci'
 import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
 import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
+import { GoHighLevelReport } from '@/components/report-sections/gohighlevel'
+import { TicketSalesReport } from '@/components/report-sections/ticket-sales'
 import { ExportPdfButton } from '@/components/export-pdf-button'
 
 import { ReportDateRange } from '@/app/dashboard/[clientSlug]/reports/[reportSlug]/report-date-range'
@@ -78,6 +80,10 @@ function getReportComponent(slug: ReportSlug, clientSlug: string, dateRange: str
       return <TikTokShopReport clientSlug={clientSlug} dateRange={dateRange} />
     case 'pr-placements':
       return <PRPlacementsReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'gohighlevel':
+      return <GoHighLevelReport clientSlug={clientSlug} dateRange={dateRange} />
+    case 'ticket-sales':
+      return <TicketSalesReport clientSlug={clientSlug} dateRange={dateRange} />
   }
 }
 
@@ -95,10 +101,12 @@ export default async function PortalReportPage({
 
   const dateRange = dateRangeParam ?? 'last_30_days'
 
+  // Portal: default to first non-internal report (skip meeting-prep)
+  const portalReports = client.enabledReports.filter(s => s !== 'meeting-prep')
   const activeSection = (
-    client.enabledReports.includes(section as ReportSlug)
+    portalReports.includes(section as ReportSlug)
       ? section
-      : client.enabledReports[0]
+      : portalReports[0]
   ) as ReportSlug
 
   const reportName = REPORT_NAMES[activeSection] ?? activeSection
@@ -107,7 +115,9 @@ export default async function PortalReportPage({
     <>
       <Header title={reportName} subtitle={client.name} logoUrl={client.logoUrl}>
         <ExportPdfButton />
-        <ReportDateRange value={dateRange} />
+        {activeSection !== 'conversational-summary' && activeSection !== 'meeting-prep' && (
+          <ReportDateRange value={dateRange} />
+        )}
       </Header>
 
       <div className="divider-full mb-8" />

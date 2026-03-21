@@ -25,6 +25,8 @@ export type ReportSlug =
   | 'meeting-prep'
   | 'google-search-console'
   | 'salesforce'
+  | 'gohighlevel'
+  | 'ticket-sales'
 
 export interface PRConfig {
   keywords: string[]
@@ -42,6 +44,7 @@ export interface ClientConfig {
   smWorkspaceId: string
   smApiKey: string // Name of the env var holding their API key
   enabledReports: ReportSlug[]
+  hiddenReports?: ReportSlug[]
   prConfig?: PRConfig
   users: {
     email: string
@@ -59,22 +62,15 @@ export const clients: ClientConfig[] = [
     enabledReports: [
       'meeting-prep',
       'conversational-summary',
-      'ffci',
-      'pr-placements',
       'exec-summary',
       'ga4',
       'meta-ads',
-      'google-ads',
       'email-marketing',
+      'gohighlevel',
+      'ticket-sales',
       'blended-performance',
-      'linkedin-ads',
-      'snapchat-ads',
-      'tiktok-ads',
-      'shopify-performance',
-      'hubspot-performance',
-      'reddit-ads',
-      'bing-ads',
     ],
+    hiddenReports: ['salesforce', 'hubspot-performance', 'shopify-performance'],
     prConfig: {
       keywords: ['"Fun Spot America"', '"Fun Spot theme park"'],
       excludeKeywords: [],
@@ -110,10 +106,10 @@ export const clients: ClientConfig[] = [
       'tiktok-ads',
       'tiktok-shop',
       'shopify-performance',
-      'hubspot-performance',
       'reddit-ads',
       'bing-ads',
     ],
+    hiddenReports: ['gohighlevel', 'salesforce', 'hubspot-performance', 'ticket-sales'],
     prConfig: {
       keywords: ['"Kind Patches"', 'kindpatches.com'],
       excludeKeywords: [],
@@ -154,6 +150,7 @@ export const clients: ClientConfig[] = [
       'reddit-ads',
       'bing-ads',
     ],
+    hiddenReports: ['ticket-sales'],
     prConfig: {
       keywords: ['"Avenue Z"', 'avenuez.com'],
       excludeKeywords: ['"avenue z-line"', '"avenue zone"'],
@@ -187,6 +184,7 @@ export const clients: ClientConfig[] = [
       'salesforce',
       'blended-performance',
     ],
+    hiddenReports: ['ticket-sales'],
     prConfig: {
       keywords: ['"Renaissance Benefits"', 'renaissancebenefits.com'],
       excludeKeywords: [],
@@ -217,6 +215,7 @@ export const clients: ClientConfig[] = [
       'linkedin-ads',
       'blended-performance',
     ],
+    hiddenReports: ['salesforce', 'hubspot-performance', 'shopify-performance', 'ticket-sales'],
     prConfig: {
       keywords: ['"Piper Aircraft"', '"Piper M600"', '"Piper Archer"'],
       excludeKeywords: ['"pied piper"'],
@@ -244,6 +243,7 @@ export const clients: ClientConfig[] = [
       'google-search-console',
       'blended-performance',
     ],
+    hiddenReports: ['ticket-sales'],
     prConfig: {
       keywords: ['"HydraFacial"', '"Hydra Facial"', 'hydrafacial.com'],
       excludeKeywords: [],
