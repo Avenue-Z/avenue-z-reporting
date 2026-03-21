@@ -43,4 +43,30 @@ export const REPORT_NAMES: Record<string, string> = {
   'tiktok-shop': 'TikTok Shop',
   'pr-placements': 'PR Placements',
   'meeting-prep': 'Meeting Prep',
+  'google-search-console': 'Search Console',
+  salesforce: 'Salesforce',
 }
+
+/** All report slugs in display order (used by sidebar to show all sections) */
+export const ALL_REPORT_SLUGS: string[] = [
+  'meeting-prep',
+  'conversational-summary',
+  'ffci',
+  'pr-placements',
+  'exec-summary',
+  'ga4',
+  'google-search-console',
+  'meta-ads',
+  'google-ads',
+  'email-marketing',
+  'blended-performance',
+  'linkedin-ads',
+  'snapchat-ads',
+  'tiktok-ads',
+  'tiktok-shop',
+  'shopify-performance',
+  'hubspot-performance',
+  'salesforce',
+  'reddit-ads',
+  'bing-ads',
+]

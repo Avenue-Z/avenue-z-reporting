@@ -43,13 +43,21 @@ export default function DashboardPage() {
           >
             {/* Avatar / Logo */}
             {client.logoUrl ? (
-              <Image
-                src={client.logoUrl}
-                alt={client.name}
-                width={40}
-                height={40}
-                className="h-10 w-10 shrink-0 rounded-lg object-cover"
-              />
+              <span className={cn(
+                'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg overflow-hidden',
+                client.slug === 'avenue-z' ? 'bg-black p-1.5' : ''
+              )}>
+                <Image
+                  src={client.logoUrl}
+                  alt={client.name}
+                  width={40}
+                  height={40}
+                  className={cn(
+                    'shrink-0',
+                    client.slug === 'avenue-z' ? 'h-7 w-7 object-contain' : 'h-10 w-10 rounded-lg object-cover'
+                  )}
+                />
+              </span>
             ) : (
               <span className={cn(
                 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-base font-bold',

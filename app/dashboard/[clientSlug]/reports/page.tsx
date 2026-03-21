@@ -22,6 +22,8 @@ import { FFCIReport } from '@/components/report-sections/ffci'
 import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
 import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
 import { MeetingPrepBrief } from '@/components/meeting-prep'
+import { ExportPdfButton } from '@/components/export-pdf-button'
+
 import { ReportDateRange } from './[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
 
@@ -107,7 +109,8 @@ export default async function ReportPage({
 
   return (
     <>
-      <Header title={reportName} subtitle={client.name}>
+      <Header title={reportName} subtitle={client.name} logoUrl={client.logoUrl}>
+        <ExportPdfButton />
         <ReportDateRange value={dateRange} />
       </Header>
 

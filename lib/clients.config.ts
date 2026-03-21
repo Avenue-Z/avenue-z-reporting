@@ -23,6 +23,8 @@ export type ReportSlug =
   | 'tiktok-shop'
   | 'pr-placements'
   | 'meeting-prep'
+  | 'google-search-console'
+  | 'salesforce'
 
 export interface PRConfig {
   keywords: string[]
@@ -124,7 +126,136 @@ export const clients: ClientConfig[] = [
       { email: 'bill@avenuez.com', role: 'INTERNAL_ADMIN' },
     ],
   },
-  // Add more clients here...
+  {
+    slug: 'avenue-z',
+    name: 'Avenue Z',
+    logoUrl: '/logos/AvenueZ_White.png',
+    smWorkspaceId: 'ws_avenuez_001',
+    smApiKey: 'SUPERMETRICS_API_KEY_AVENUE_Z',
+    enabledReports: [
+      'meeting-prep',
+      'conversational-summary',
+      'ffci',
+      'pr-placements',
+      'exec-summary',
+      'ga4',
+      'google-search-console',
+      'meta-ads',
+      'google-ads',
+      'email-marketing',
+      'blended-performance',
+      'linkedin-ads',
+      'snapchat-ads',
+      'tiktok-ads',
+      'tiktok-shop',
+      'shopify-performance',
+      'hubspot-performance',
+      'salesforce',
+      'reddit-ads',
+      'bing-ads',
+    ],
+    prConfig: {
+      keywords: ['"Avenue Z"', 'avenuez.com'],
+      excludeKeywords: ['"avenue z-line"', '"avenue zone"'],
+      sourceLocationUri: ['http://en.wikipedia.org/wiki/United_States'],
+      language: 'eng',
+      dataTypes: ['news', 'pr', 'blog'],
+      lookbackDays: 31,
+    },
+    users: [
+      { email: 'bill@avenuez.com', role: 'INTERNAL_ADMIN' },
+    ],
+  },
+  {
+    slug: 'renaissance-benefits',
+    name: 'Renaissance Benefits',
+    logoUrl: '/logos/RenaissanceBenefits.jpeg',
+    smWorkspaceId: 'ws_renbene_001',
+    smApiKey: 'SUPERMETRICS_API_KEY_RENAISSANCE',
+    enabledReports: [
+      'meeting-prep',
+      'conversational-summary',
+      'ffci',
+      'pr-placements',
+      'exec-summary',
+      'ga4',
+      'google-search-console',
+      'google-ads',
+      'meta-ads',
+      'linkedin-ads',
+      'email-marketing',
+      'salesforce',
+      'blended-performance',
+    ],
+    prConfig: {
+      keywords: ['"Renaissance Benefits"', 'renaissancebenefits.com'],
+      excludeKeywords: [],
+      sourceLocationUri: ['http://en.wikipedia.org/wiki/United_States'],
+      language: 'eng',
+      dataTypes: ['news', 'pr'],
+      lookbackDays: 31,
+    },
+    users: [
+      { email: 'bill@avenuez.com', role: 'INTERNAL_ADMIN' },
+    ],
+  },
+  {
+    slug: 'piper-aircraft',
+    name: 'Piper Aircraft',
+    logoUrl: '/logos/PiperAircraft.jpeg',
+    smWorkspaceId: 'ws_piper_001',
+    smApiKey: 'SUPERMETRICS_API_KEY_PIPER',
+    enabledReports: [
+      'meeting-prep',
+      'conversational-summary',
+      'ffci',
+      'exec-summary',
+      'ga4',
+      'google-search-console',
+      'google-ads',
+      'meta-ads',
+      'linkedin-ads',
+      'blended-performance',
+    ],
+    prConfig: {
+      keywords: ['"Piper Aircraft"', '"Piper M600"', '"Piper Archer"'],
+      excludeKeywords: ['"pied piper"'],
+      sourceLocationUri: ['http://en.wikipedia.org/wiki/United_States'],
+      language: 'eng',
+      dataTypes: ['news', 'pr'],
+      lookbackDays: 31,
+    },
+    users: [
+      { email: 'bill@avenuez.com', role: 'INTERNAL_ADMIN' },
+    ],
+  },
+  {
+    slug: 'hydrafacial',
+    name: 'HydraFacial',
+    logoUrl: '/logos/Hydrafacial.png',
+    smWorkspaceId: 'ws_hydrafacial_001',
+    smApiKey: 'SUPERMETRICS_API_KEY_HYDRAFACIAL',
+    enabledReports: [
+      'meeting-prep',
+      'conversational-summary',
+      'ffci',
+      'exec-summary',
+      'ga4',
+      'google-search-console',
+      'blended-performance',
+    ],
+    prConfig: {
+      keywords: ['"HydraFacial"', '"Hydra Facial"', 'hydrafacial.com'],
+      excludeKeywords: [],
+      sourceLocationUri: ['http://en.wikipedia.org/wiki/United_States'],
+      language: 'eng',
+      dataTypes: ['news', 'pr', 'blog'],
+      lookbackDays: 31,
+    },
+    users: [
+      { email: 'bill@avenuez.com', role: 'INTERNAL_ADMIN' },
+    ],
+  },
 ]
 
 // --- Helpers ---

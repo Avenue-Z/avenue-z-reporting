@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { demoLogout } from '@/app/actions/demo-auth'
-import { REPORT_NAMES } from '@/lib/constants'
+import { REPORT_NAMES, ALL_REPORT_SLUGS } from '@/lib/constants'
 import { getAllClients } from '@/lib/clients.config'
 import {
   LayoutGrid,
@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   Settings,
   LogOut,
+  Lock,
 } from 'lucide-react'
 import { AvenueZLogo } from './avenue-z-logo'
 
@@ -117,13 +118,21 @@ function MainSidebar({ pathname }: { pathname: string }) {
                     )}
                   >
                     {client.logoUrl ? (
-                      <Image
-                        src={client.logoUrl}
-                        alt={client.name}
-                        width={24}
-                        height={24}
-                        className="h-6 w-6 shrink-0 rounded-md object-cover"
-                      />
+                      <span className={cn(
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-md overflow-hidden',
+                        client.slug === 'avenue-z' ? 'bg-black p-1' : ''
+                      )}>
+                        <Image
+                          src={client.logoUrl}
+                          alt={client.name}
+                          width={24}
+                          height={24}
+                          className={cn(
+                            'shrink-0 object-cover',
+                            client.slug === 'avenue-z' ? 'h-4 w-4 object-contain' : 'h-6 w-6 rounded-md'
+                          )}
+                        />
+                      </span>
                     ) : (
                       <span className={cn(
                         'flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[11px] font-bold',
@@ -199,13 +208,21 @@ function ClientSidebar({
 
         <div className="mt-3 flex items-center gap-3 px-3 pb-4">
           {client?.logoUrl ? (
-            <Image
-              src={client.logoUrl}
-              alt={clientName}
-              width={32}
-              height={32}
-              className="h-8 w-8 shrink-0 rounded-md object-cover"
-            />
+            <span className={cn(
+              'flex h-8 w-8 shrink-0 items-center justify-center rounded-md overflow-hidden',
+              clientSlug === 'avenue-z' ? 'bg-black p-1' : ''
+            )}>
+              <Image
+                src={client.logoUrl}
+                alt={clientName}
+                width={32}
+                height={32}
+                className={cn(
+                  'shrink-0 object-cover',
+                  clientSlug === 'avenue-z' ? 'h-5 w-5 object-contain' : 'h-8 w-8 rounded-md'
+                )}
+              />
+            </span>
           ) : (
             <span className={cn(
               'flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold',
@@ -226,12 +243,27 @@ function ClientSidebar({
               Report sections
             </p>
             <ul className="flex flex-col gap-0.5">
-              {client.enabledReports.map((slug) => {
-                const isActive = isOnReports && (activeSection === slug || (!activeSection && slug === client.enabledReports[0]))
+              {ALL_REPORT_SLUGS.map((slug) => {
+                const isEnabled = client.enabledReports.includes(slug as any)
+                const isActive = isEnabled && isOnReports && (activeSection === slug || (!activeSection && slug === client.enabledReports[0]))
                 const linkParams = new URLSearchParams()
                 linkParams.set('section', slug)
                 if (dateRange) linkParams.set('dateRange', dateRange)
                 const isMeetingPrep = slug === 'meeting-prep'
+
+                if (!isEnabled) {
+                  return (
+                    <li key={slug}>
+                      <span
+                        className="flex items-center justify-between rounded-md px-3 py-2 text-sm font-semibold text-white/20 cursor-not-allowed"
+                      >
+                        <span>{REPORT_NAMES[slug] ?? slug}</span>
+                        <Lock className="h-3.5 w-3.5 shrink-0" />
+                      </span>
+                    </li>
+                  )
+                }
+
                 return (
                   <li key={slug}>
                     {isMeetingPrep ? (

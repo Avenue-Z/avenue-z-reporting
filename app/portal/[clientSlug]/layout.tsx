@@ -9,7 +9,7 @@ export default function PortalLayout({
   params: Promise<{ clientSlug: string }>
 }) {
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex h-screen bg-black" data-print-layout>
       <Suspense>
         <PortalSidebar />
       </Suspense>

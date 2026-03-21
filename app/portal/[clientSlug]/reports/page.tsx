@@ -21,6 +21,8 @@ import { ConversationalSummary } from '@/components/report-sections/conversation
 import { FFCIReport } from '@/components/report-sections/ffci'
 import { TikTokShopReport } from '@/components/report-sections/tiktok-shop'
 import { PRPlacementsReport } from '@/components/report-sections/pr-placements'
+import { ExportPdfButton } from '@/components/export-pdf-button'
+
 import { ReportDateRange } from '@/app/dashboard/[clientSlug]/reports/[reportSlug]/report-date-range'
 import type { ReportSlug } from '@/lib/clients.config'
 
@@ -103,7 +105,8 @@ export default async function PortalReportPage({
 
   return (
     <>
-      <Header title={reportName} subtitle={client.name}>
+      <Header title={reportName} subtitle={client.name} logoUrl={client.logoUrl}>
+        <ExportPdfButton />
         <ReportDateRange value={dateRange} />
       </Header>
 

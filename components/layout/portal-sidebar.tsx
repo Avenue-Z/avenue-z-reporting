@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { demoLogout } from '@/app/actions/demo-auth'
-import { REPORT_NAMES } from '@/lib/constants'
+import { REPORT_NAMES, ALL_REPORT_SLUGS } from '@/lib/constants'
 import { getAllClients } from '@/lib/clients.config'
-import { LogOut } from 'lucide-react'
+import { LogOut, Lock } from 'lucide-react'
 
 export function PortalSidebar() {
   const pathname = usePathname()
@@ -51,14 +51,28 @@ export function PortalSidebar() {
           Reports
         </p>
         <ul className="flex flex-col gap-0.5">
-          {client.enabledReports.filter((slug) => slug !== 'meeting-prep').map((slug) => {
+          {ALL_REPORT_SLUGS.filter((slug) => slug !== 'meeting-prep').map((slug) => {
+            const isEnabled = client.enabledReports.includes(slug as any)
             const isActive =
+              isEnabled &&
               isOnReports &&
               (activeSection === slug ||
-                (!activeSection && slug === client.enabledReports[0]))
+                (!activeSection && slug === client.enabledReports.filter(s => s !== 'meeting-prep')[0]))
             const linkParams = new URLSearchParams()
             linkParams.set('section', slug)
             if (dateRange) linkParams.set('dateRange', dateRange)
+
+            if (!isEnabled) {
+              return (
+                <li key={slug}>
+                  <span className="flex items-center justify-between rounded-md px-3 py-2 text-sm font-semibold text-white/20 cursor-not-allowed">
+                    <span>{REPORT_NAMES[slug] ?? slug}</span>
+                    <Lock className="h-3.5 w-3.5 shrink-0" />
+                  </span>
+                </li>
+              )
+            }
+
             return (
               <li key={slug}>
                 <Link
